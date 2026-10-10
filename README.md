@@ -26,7 +26,9 @@ sitemap.xml
 
 ## Deploy
 
-Vercel: importar el repo, sin configuración de build.
+Proyecto `martinahobelar-presskit` en el equipo kexxy de Vercel, conectado a este repo, sin paso de build. Cada push a `main` sale a producción en https://martinahobelar-presskit.vercel.app.
+
+La URL para compartir es esa. Las otras que arma Vercel (las de cada deploy y los alias `-kexxy` / `-git-main-kexxy`) piden login de Vercel.
 
 ## Crédito
 
