@@ -241,6 +241,46 @@
   }
 
   /* ----------------------------------------------------------
+     Fotos que no cargan: en el celular la conexión se corta y el
+     navegador no vuelve a pedirlas solo. Se reintenta cada una
+     hasta 4 veces, y todas de nuevo cuando vuelve la conexión.
+     ---------------------------------------------------------- */
+  var MAX_TRIES = 4;
+
+  function isBroken(img) {
+    return img.complete && img.naturalWidth === 0 && !!img.getAttribute('src');
+  }
+
+  function baseSrc(img) {
+    return (img.getAttribute('src') || '').replace(/[?&]r=\d+$/, '');
+  }
+
+  function retry(img) {
+    var base = baseSrc(img);
+    if (!base) return;
+    // el visor cambia de foto: cada foto nueva arranca con sus propios intentos
+    if (img.dataset.base !== base) { img.dataset.base = base; img.dataset.tries = '0'; }
+    var tries = Number(img.dataset.tries);
+    if (tries >= MAX_TRIES) return;
+    img.dataset.tries = String(tries + 1);
+    setTimeout(function () {
+      if (baseSrc(img) !== base) return; // mientras tanto se pidió otra foto
+      img.src = base + (base.indexOf('?') === -1 ? '?' : '&') + 'r=' + (tries + 1);
+    }, 1200 * (tries + 1));
+  }
+
+  Array.prototype.forEach.call(document.images, function (img) {
+    img.addEventListener('error', function () { retry(img); });
+    if (isBroken(img)) retry(img);
+  });
+
+  window.addEventListener('online', function () {
+    Array.prototype.forEach.call(document.images, function (img) {
+      if (isBroken(img)) { img.dataset.tries = '0'; retry(img); }
+    });
+  });
+
+  /* ----------------------------------------------------------
      Año del pie
      ---------------------------------------------------------- */
   var year = document.getElementById('year');
