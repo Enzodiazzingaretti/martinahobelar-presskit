@@ -15,7 +15,7 @@ Es una sola página estática: sin panel, sin funciones serverless y sin paso de
 
 - **Booking siempre a mano.** Botón en el inicio y, al bajar, en la barra; en la sección de booking queda lleno.
 - **Copiar el mail y la bio.** Muchos no tienen app de correo configurada en la compu, y la bio la copia quien arma la difusión.
-- **Fotos en JPG.** El visor muestra WebP pero descarga JPG de hasta 3000 px, que cualquier programa abre. Arriba de la grilla están la carpeta en alta resolución y el logo en PNG.
+- **Fotos en JPG.** El visor muestra WebP pero descarga JPG de hasta 3000 px, que cualquier programa abre. Arriba de la grilla está la carpeta en alta resolución.
 - **Todo se puede tocar.** Botones y enlaces de 44 px de alto como mínimo; fotos nítidas en pantallas de alta densidad (srcset) sin cargar de más en el celular.
 
 ## Estructura
@@ -25,7 +25,7 @@ index.html     todo el contenido: textos, sets, fotos, rider y booking
 style.css      estilos
 script.js      comportamiento: latido, reproductor de sets, visor de fotos, copiar mail y bio, menú y reintento de fotos
 fonts/         Archivo variable (woff2, solo latín) con su licencia OFL
-img/           fotos en WebP y JPG, la gota y el logo en PNG, íconos y vista previa para compartir (og.jpg)
+img/           fotos en WebP y JPG, la gota, íconos y vista previa para compartir (og.jpg)
 vercel.json    encabezados de seguridad y caché
 robots.txt
 sitemap.xml
