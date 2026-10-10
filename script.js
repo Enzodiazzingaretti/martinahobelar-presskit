@@ -22,7 +22,7 @@
     window.addEventListener('scroll', paintBar, { passive: true });
   }
 
-  // El nombre chico de la barra aparece cuando el grande ya no se ve
+  // La firma chica de la barra aparece cuando el nombre grande ya no se ve
   if (bar && heroName && 'IntersectionObserver' in window) {
     new IntersectionObserver(function (entries) {
       bar.classList.toggle('has-hero-name', entries[0].isIntersecting);
@@ -61,41 +61,50 @@
   }
 
   /* ----------------------------------------------------------
-     Inicio: las tres fotos que eligió, en fundido lento
+     La sección en pantalla queda marcada en el menú con la gota
      ---------------------------------------------------------- */
-  var slides = Array.prototype.slice.call(document.querySelectorAll('[data-slide]'));
-  var HOLD = 7500;   // tiempo en pantalla de cada foto
-  var FADE = 2400;   // igual a la transición de .hero__slide
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.bar__nav a, .menu__nav a'));
+  var sections = ['sets', 'bio', 'fotos', 'rider', 'booking']
+    .map(function (id) { return document.getElementById(id); })
+    .filter(Boolean);
 
-  function loadSlide(slide) {
-    var img = slide.querySelector('img');
-    if (img && img.dataset.src && !img.getAttribute('src')) {
-      img.src = img.dataset.src;
-    }
-    return img && img.decode ? img.decode().catch(function () {}) : Promise.resolve();
+  function markSection(id) {
+    navLinks.forEach(function (a) {
+      if (id && a.getAttribute('href') === '#' + id) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
   }
 
-  if (slides.length > 1 && !reduceMotion) {
-    var current = 0;
-    var ready = [true];
+  if (sections.length && 'IntersectionObserver' in window) {
+    var visible = {};
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { visible[e.target.id] = e.isIntersecting; });
+      var current = null;
+      sections.forEach(function (sec) { if (visible[sec.id]) current = sec.id; });
+      markSection(current);
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    sections.forEach(function (sec) { spy.observe(sec); });
+  }
 
-    window.addEventListener('load', function () {
-      slides.slice(1).forEach(function (slide, i) {
-        loadSlide(slide).then(function () { ready[i + 1] = true; });
-      });
+  /* ----------------------------------------------------------
+     Latido: ocho golpes a los BPM y quieto. Se vuelve a disparar
+     sacando y poniendo la clase.
+     ---------------------------------------------------------- */
+  function beat(el) {
+    if (!el || reduceMotion) return;
+    el.classList.remove('is-latiendo');
+    void el.offsetWidth; // reinicia la animación
+    el.classList.add('is-latiendo');
+  }
 
-      setInterval(function () {
-        if (document.hidden) return;
-        var next = (current + 1) % slides.length;
-        if (!ready[next]) return;
-
-        var leaving = slides[current];
-        leaving.classList.add('is-leaving');
-        leaving.classList.remove('is-active');
-        slides[next].classList.add('is-active');
-        setTimeout(function () { leaving.classList.remove('is-leaving'); }, FADE + 100);
-        current = next;
-      }, HOLD);
+  // Inicio: cuando la foto y la tipografía ya están, entra con ocho golpes
+  var hero = document.querySelector('.hero');
+  var heroImg = document.getElementById('heroImg');
+  if (hero && heroImg && !reduceMotion) {
+    var ready = [heroImg.decode ? heroImg.decode().catch(function () {}) : Promise.resolve()];
+    if (document.fonts && document.fonts.ready) ready.push(document.fonts.ready);
+    Promise.all(ready).then(function () {
+      setTimeout(function () { beat(hero); }, 350);
     });
   }
 
@@ -103,66 +112,71 @@
      Sets: un reproductor y la lista; la miniatura se cambia por
      el video recién cuando alguien toca play
      ---------------------------------------------------------- */
+  var sets = document.getElementById('sets');
   var player = document.getElementById('player');
   var poster = document.getElementById('playerPoster');
   var thumb = document.getElementById('playerThumb');
-  var now = document.getElementById('playerNow');
+  var nowGota = document.getElementById('nowGota');
+  var nowName = document.getElementById('nowName');
+  var nowBpm = document.getElementById('nowBpm');
   var tracks = Array.prototype.slice.call(document.querySelectorAll('.track'));
-  var currentId = tracks.length ? tracks[0].dataset.id : null;
+  var current = tracks[0];
 
   function trackInfo(btn) {
     var nameEl = btn.querySelector('.track__name');
     var small = nameEl.querySelector('small');
-    var name = nameEl.firstChild.textContent.trim();
+    var bpm = btn.dataset.bpm;
     return {
-      name: name,
+      name: nameEl.firstChild.textContent.trim(),
       detail: small ? small.textContent.trim() : '',
-      bpm: btn.querySelector('.track__bpm').textContent.trim()
+      bpm: bpm ? Number(bpm) : null,
+      label: btn.querySelector('.track__bpm').textContent.trim()
     };
   }
 
-  function paintNow(btn) {
+  function play(btn) {
     var info = trackInfo(btn);
-    now.textContent = info.name + (info.detail ? ' (' + info.detail + ')' : '') + ' ';
-    var span = document.createElement('span');
-    span.textContent = info.bpm;
-    now.appendChild(span);
-    return info;
-  }
-
-  function play(id, info) {
     var frame = player.querySelector('.player__frame');
     if (!frame) {
       frame = document.createElement('div');
       frame.className = 'player__frame';
-      var current = player.querySelector('.player__poster');
-      if (current) current.replaceWith(frame);
+      var old = player.querySelector('.player__poster');
+      if (old) old.replaceWith(frame);
       else player.insertBefore(frame, player.firstChild);
     }
     var iframe = document.createElement('iframe');
-    iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) +
+    iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(btn.dataset.id) +
       '?autoplay=1&rel=0&playsinline=1';
     iframe.title = 'Set de Martina Høbelar en ' + info.name;
     iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
     frame.replaceChildren(iframe);
   }
 
+  function choose(btn) {
+    var info = trackInfo(btn);
+    tracks.forEach(function (t) { t.removeAttribute('aria-current'); });
+    btn.setAttribute('aria-current', 'true');
+    current = btn;
+
+    nowName.textContent = info.name + (info.detail ? ' (' + info.detail + ')' : '');
+    nowBpm.textContent = info.bpm ? info.label + ' BPM' : info.label;
+    if (thumb) thumb.src = 'https://i.ytimg.com/vi/' + btn.dataset.id + '/maxresdefault.jpg';
+    if (poster) poster.setAttribute('aria-label', 'Reproducir el set de ' + info.name);
+
+    // la gota late a los BPM de este set
+    if (info.bpm) {
+      sets.style.setProperty('--bpm', String(info.bpm));
+      beat(nowGota);
+    }
+  }
+
   if (player && poster && tracks.length) {
-    poster.addEventListener('click', function () {
-      var btn = tracks.find(function (t) { return t.dataset.id === currentId; });
-      play(currentId, trackInfo(btn));
-    });
+    poster.addEventListener('click', function () { play(current); });
 
     tracks.forEach(function (btn) {
       btn.addEventListener('click', function () {
-        tracks.forEach(function (t) { t.removeAttribute('aria-current'); });
-        btn.setAttribute('aria-current', 'true');
-        currentId = btn.dataset.id;
-        var info = paintNow(btn);
-        if (thumb) thumb.src = 'https://i.ytimg.com/vi/' + currentId + '/maxresdefault.jpg';
-        poster.setAttribute('aria-label', 'Reproducir el set de ' + info.name);
-        play(currentId, info);
-
+        choose(btn);
+        play(btn);
         // En una columna el reproductor queda arriba de la lista
         if (window.matchMedia('(max-width: 980px)').matches) {
           player.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
@@ -172,7 +186,7 @@
   }
 
   /* ----------------------------------------------------------
-     Visor de fotos
+     Visor de fotos: las dos grandes y la grilla, en orden
      ---------------------------------------------------------- */
   var viewer = document.getElementById('viewer');
   var vImg = document.getElementById('viewerImg');
@@ -196,10 +210,6 @@
     if (next) { var pre = new Image(); pre.src = next.dataset.full; }
   }
 
-  function closeViewer() {
-    viewer.close();
-  }
-
   if (viewer && typeof viewer.showModal === 'function' && photos.length) {
     photos.forEach(function (btn, i) {
       btn.addEventListener('click', function () {
@@ -217,11 +227,11 @@
 
     document.getElementById('viewerPrev').addEventListener('click', function () { show(index - 1); });
     document.getElementById('viewerNext').addEventListener('click', function () { show(index + 1); });
-    document.getElementById('viewerClose').addEventListener('click', closeViewer);
+    document.getElementById('viewerClose').addEventListener('click', function () { viewer.close(); });
 
     // tocar el fondo cierra
     viewer.addEventListener('click', function (e) {
-      if (e.target === viewer) closeViewer();
+      if (e.target === viewer) viewer.close();
     });
 
     viewer.addEventListener('keydown', function (e) {
