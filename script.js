@@ -5,6 +5,13 @@
   'use strict';
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var announcer = document.getElementById('announcer');
+
+  function announce(text) {
+    if (!announcer) return;
+    announcer.textContent = '';
+    setTimeout(function () { announcer.textContent = text; }, 30);
+  }
 
   /* ----------------------------------------------------------
      Barra: transparente sobre la foto, negra después del inicio
@@ -22,7 +29,20 @@
     window.addEventListener('scroll', paintBar, { passive: true });
   }
 
-  // La firma chica de la barra aparece cuando el nombre grande ya no se ve
+  // Lugar que ocupa el botón de booking, para que el menú se corra cuando aparece
+  var cta = document.querySelector('.bar__cta');
+  function measureCta() {
+    if (!bar || !cta) return;
+    var gap = parseFloat(getComputedStyle(cta.parentNode).columnGap) || 0;
+    bar.style.setProperty('--cta-room', (cta.offsetWidth + gap) + 'px');
+  }
+  measureCta();
+  // la transición se prende después de medir, para que no se mueva al cargar
+  requestAnimationFrame(function () { if (bar) bar.classList.add('is-ready'); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureCta);
+  window.addEventListener('resize', measureCta);
+
+  // La firma y el botón de booking aparecen cuando el nombre grande ya no se ve
   if (bar && heroName && 'IntersectionObserver' in window) {
     new IntersectionObserver(function (entries) {
       bar.classList.toggle('has-hero-name', entries[0].isIntersecting);
@@ -63,7 +83,7 @@
   /* ----------------------------------------------------------
      La sección en pantalla queda marcada en el menú con la gota
      ---------------------------------------------------------- */
-  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.bar__nav a, .menu__nav a'));
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.bar__nav a, .bar__cta, .menu__nav a'));
   var sections = ['sets', 'bio', 'fotos', 'rider', 'booking']
     .map(function (id) { return document.getElementById(id); })
     .filter(Boolean);
@@ -79,9 +99,9 @@
     var visible = {};
     var spy = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) { visible[e.target.id] = e.isIntersecting; });
-      var current = null;
-      sections.forEach(function (sec) { if (visible[sec.id]) current = sec.id; });
-      markSection(current);
+      var here = null;
+      sections.forEach(function (sec) { if (visible[sec.id]) here = sec.id; });
+      markSection(here);
     }, { rootMargin: '-45% 0px -50% 0px' });
     sections.forEach(function (sec) { spy.observe(sec); });
   }
@@ -124,11 +144,9 @@
 
   function trackInfo(btn) {
     var nameEl = btn.querySelector('.track__name');
-    var small = nameEl.querySelector('small');
     var bpm = btn.dataset.bpm;
     return {
       name: nameEl.firstChild.textContent.trim(),
-      detail: small ? small.textContent.trim() : '',
       bpm: bpm ? Number(bpm) : null,
       label: btn.querySelector('.track__bpm').textContent.trim()
     };
@@ -158,7 +176,7 @@
     btn.setAttribute('aria-current', 'true');
     current = btn;
 
-    nowName.textContent = info.name + (info.detail ? ' (' + info.detail + ')' : '');
+    nowName.textContent = info.name;
     nowBpm.textContent = info.bpm ? info.label + ' BPM' : info.label;
     if (thumb) thumb.src = 'https://i.ytimg.com/vi/' + btn.dataset.id + '/maxresdefault.jpg';
     if (poster) poster.setAttribute('aria-label', 'Reproducir el set de ' + info.name);
@@ -186,7 +204,59 @@
   }
 
   /* ----------------------------------------------------------
-     Visor de fotos: las dos grandes y la grilla, en orden
+     Copiar: el mail (muchos no tienen app de correo configurada
+     en la compu) y la bio, para quien arma la difusión
+     ---------------------------------------------------------- */
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function (resolve, reject) {
+      var area = document.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.opacity = '0';
+      document.body.appendChild(area);
+      area.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      area.remove();
+      if (ok) resolve(); else reject(new Error('copy'));
+    });
+  }
+
+  document.querySelectorAll('.copy').forEach(function (btn) {
+    var label = btn.textContent;
+    var timer = null;
+    btn.addEventListener('click', function () {
+      var text = btn.dataset.copy;
+      if (btn.dataset.copyFrom) {
+        var src = document.getElementById(btn.dataset.copyFrom);
+        text = Array.prototype.map.call(src.querySelectorAll('p'), function (p) {
+          return p.textContent.trim();
+        }).join('\n\n');
+      }
+      copyText(text).then(function () {
+        btn.textContent = btn.dataset.done || 'Copiado';
+        btn.classList.add('is-done');
+        announce(btn.dataset.done || 'Copiado');
+      }, function () {
+        btn.textContent = 'No se pudo copiar';
+        announce('No se pudo copiar. Seleccioná el texto y copialo a mano.');
+      }).then(function () {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          btn.textContent = label;
+          btn.classList.remove('is-done');
+        }, 2200);
+      });
+    });
+  });
+
+  /* ----------------------------------------------------------
+     Visor de fotos: las dos grandes y la grilla, en orden.
+     Se ve en WebP y se descarga en JPG.
      ---------------------------------------------------------- */
   var viewer = document.getElementById('viewer');
   var vImg = document.getElementById('viewerImg');
@@ -202,8 +272,8 @@
     vImg.src = btn.dataset.full;
     vImg.alt = img.alt;
     vCount.textContent = (index + 1) + ' / ' + photos.length;
-    vDl.href = btn.dataset.full;
-    vDl.setAttribute('download', 'martina-hobelar-' + String(index + 1).padStart(2, '0') + '.webp');
+    vDl.href = btn.dataset.jpg || btn.dataset.full;
+    vDl.setAttribute('download', 'martina-hobelar-' + String(index + 1).padStart(2, '0') + (btn.dataset.jpg ? '.jpg' : '.webp'));
 
     // la siguiente ya queda pedida
     var next = photos[(index + 1) % photos.length];
@@ -261,12 +331,13 @@
     return img.complete && img.naturalWidth === 0 && !!img.getAttribute('src');
   }
 
-  function baseSrc(img) {
-    return (img.getAttribute('src') || '').replace(/[?&]r=\d+$/, '');
+  function cleanUrl(u) {
+    return (u || '').replace(/[?&]r=\d+$/, '');
   }
 
   function retry(img) {
-    var base = baseSrc(img);
+    // con srcset la que falló es currentSrc, no el src de respaldo
+    var base = cleanUrl(img.currentSrc || img.getAttribute('src'));
     if (!base) return;
     // el visor cambia de foto: cada foto nueva arranca con sus propios intentos
     if (img.dataset.base !== base) { img.dataset.base = base; img.dataset.tries = '0'; }
@@ -274,7 +345,8 @@
     if (tries >= MAX_TRIES) return;
     img.dataset.tries = String(tries + 1);
     setTimeout(function () {
-      if (baseSrc(img) !== base) return; // mientras tanto se pidió otra foto
+      if (cleanUrl(img.currentSrc || img.getAttribute('src')) !== base) return; // se pidió otra foto
+      if (img.hasAttribute('srcset')) { img.removeAttribute('srcset'); img.removeAttribute('sizes'); }
       img.src = base + (base.indexOf('?') === -1 ? '?' : '&') + 'r=' + (tries + 1);
     }, 1200 * (tries + 1));
   }

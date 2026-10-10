@@ -9,6 +9,7 @@
   <meta name="author" content="Martina Høbelar" />
   <meta name="theme-color" content="#000000" />
   <meta name="color-scheme" content="dark" />
+  <meta name="format-detection" content="telephone=no" />
   <link rel="canonical" href="https://martinahobelar-presskit.vercel.app/" />
 
   <link rel="icon" href="img/icon.svg" type="image/svg+xml" />
@@ -31,12 +32,11 @@
   <meta name="twitter:description" content="DJ y productora de hard techno y schranz. Sets, bio, fotos, rider y booking." />
   <meta name="twitter:image" content="https://martinahobelar-presskit.vercel.app/img/og.jpg" />
 
-  <!-- Las dos tipografías viven en el sitio: la gótica se precarga porque es el nombre -->
-  <link rel="preload" href="fonts/grenze-gotisch-latin.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="fonts/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" as="image" href="img/hero-1.webp" media="(min-width: 700px)" fetchpriority="high" />
+  <!-- Una sola tipografía (Archivo variable), servida desde el sitio -->
+  <link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" as="image" imagesrcset="img/hero-1.webp 1920w, img/hero-1-2880.webp 2880w" imagesizes="100vw" media="(min-width: 700px)" fetchpriority="high" />
   <link rel="preload" as="image" href="img/hero-1-m.webp" media="(max-width: 699px)" fetchpriority="high" />
-  <link rel="stylesheet" href="style.css?v=3" />
+  <link rel="stylesheet" href="style.css?v=4" />
 
   <script type="application/ld+json">
   {
@@ -61,20 +61,22 @@
 
   <a class="skip" href="#sets">Saltar al contenido</a>
 
-  <!-- BARRA -->
+  <!-- BARRA: la firma y el botón de booking aparecen cuando el inicio queda atrás -->
   <header class="bar has-hero-name" id="bar">
     <a class="bar__mark" href="#inicio">
       <img class="gota" src="img/gota.webp" alt="" width="220" height="440" />
       <span>Martina Høbelar</span>
     </a>
-    <nav class="bar__nav" aria-label="Secciones">
-      <a href="#sets">Sets</a>
-      <a href="#bio">Bio</a>
-      <a href="#fotos">Fotos</a>
-      <a href="#rider">Rider</a>
-      <a href="#booking">Booking</a>
-    </nav>
-    <button class="bar__menu" id="menuBtn" type="button" aria-expanded="false" aria-controls="menu">Menú</button>
+    <div class="bar__right">
+      <nav class="bar__nav" aria-label="Secciones">
+        <a href="#sets">Sets</a>
+        <a href="#bio">Bio</a>
+        <a href="#fotos">Fotos</a>
+        <a href="#rider">Rider</a>
+      </nav>
+      <a class="bar__cta btn btn--line btn--sm" href="#booking">Booking</a>
+      <button class="bar__menu" id="menuBtn" type="button" aria-expanded="false" aria-controls="menu">Menú</button>
+    </div>
   </header>
 
   <!-- MENÚ EN CELULAR -->
@@ -86,7 +88,7 @@
       <a href="#rider">Rider</a>
       <a href="#booking">Booking</a>
     </nav>
-    <a class="menu__mail" href="mailto:booking.grooveselections@gmail.com">booking.grooveselections@gmail.com</a>
+    <a class="menu__mail" href="mailto:booking.grooveselections@gmail.com?subject=Booking%20Martina%20H%C3%B8belar">booking.grooveselections@gmail.com</a>
   </div>
 
   <main>
@@ -95,7 +97,7 @@
     <section class="hero" id="inicio" aria-label="Martina Høbelar">
       <picture class="hero__photo">
         <source media="(max-width: 699px)" srcset="img/hero-1-m.webp" />
-        <img id="heroImg" src="img/hero-1.webp" alt="" width="1920" height="1281" fetchpriority="high" />
+        <img id="heroImg" src="img/hero-1.webp" srcset="img/hero-1.webp 1920w, img/hero-1-2880.webp 2880w" sizes="100vw" alt="" width="1920" height="1281" fetchpriority="high" />
       </picture>
       <div class="hero__shade" aria-hidden="true"></div>
       <div class="hero__light" aria-hidden="true"></div>
@@ -106,8 +108,11 @@
           <span class="hero__last">Høbelar<img class="gota" src="img/gota.webp" alt="" width="220" height="440" /></span>
         </h1>
         <div class="hero__foot">
-          <p class="hero__lead">DJ y productora. Hard techno y schranz desde Buenos Aires.</p>
-          <p class="hero__links"><a href="#sets">Ver sets</a> <a href="#booking">Booking</a></p>
+          <p class="hero__lead"><span>DJ y productora de hard techno y schranz.</span> <span>Co&#8209;founder de Sangre Club, Buenos Aires.</span></p>
+          <p class="hero__actions">
+            <a class="btn btn--solid" href="#sets">Ver sets</a>
+            <a class="btn btn--line" href="#booking">Booking</a>
+          </p>
         </div>
       </div>
     </section>
@@ -125,7 +130,7 @@
             <button class="player__poster" id="playerPoster" type="button" aria-label="Reproducir el set de 120bpm studio">
               <img id="playerThumb" src="https://i.ytimg.com/vi/n2j-JuCR4as/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async" />
               <span class="player__play" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 24 24" width="24" height="24"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg>
               </span>
             </button>
             <p class="now" aria-live="polite">
@@ -138,7 +143,7 @@
           <div class="sets__list">
             <ol class="tracks" id="tracks">
               <li><button class="track" type="button" data-id="n2j-JuCR4as" data-bpm="157" aria-current="true">
-                <span class="track__name">120bpm studio</span>
+                <span class="track__name">120bpm studio <small>Su set más visto</small></span>
                 <span class="track__bpm">157+</span>
               </button></li>
               <li><button class="track" type="button" data-id="VNgkhuu-yEw" data-bpm="155">
@@ -174,7 +179,7 @@
                 <span class="track__bpm track__bpm--club">En club</span>
               </button></li>
             </ol>
-            <a class="more" href="https://www.youtube.com/@martuhobelar" target="_blank" rel="noopener">Ver el canal de YouTube</a>
+            <a class="link" href="https://www.youtube.com/@martuhobelar" target="_blank" rel="noopener">Ver el canal de YouTube</a>
           </div>
         </div>
       </div>
@@ -189,9 +194,12 @@
 
         <div class="bio__text">
           <h2 class="titulo" id="bio-title">Bio</h2>
-          <p class="bio__lead">Martina Høbelar es DJ y productora argentina, nacida el 18 de enero de 2004, y co-founder de Sangre Club.</p>
-          <p>Su acercamiento al techno nace desde temprana edad, influenciada por sonidos con kicks marcados en distintos subgéneros. A los 17 años, descubrir las pistas de techno fue una revelación que la llevó, dos años después, a convertirse en DJ de este género y sus variantes.</p>
-          <p>Su sonido es una fusión potente de kicks marcados, percusión hipnótica y grooves constantes que invitan al movimiento sin pausa. Con una esencia arraigada en la cultura underground, su música navega entre el hard techno, el schranz, el neorave y el hard groove, con una identidad oscura pero vibrante.</p>
+          <div class="bio__body" id="bioText">
+            <p class="bio__lead">Martina Høbelar es DJ y productora argentina, nacida el 18 de enero de 2004, y co-founder de Sangre Club.</p>
+            <p>Su acercamiento al techno nace desde temprana edad, influenciada por sonidos con kicks marcados en distintos subgéneros. A los 17 años, descubrir las pistas de techno fue una revelación que la llevó, dos años después, a convertirse en DJ de este género y sus variantes.</p>
+            <p>Su sonido es una fusión potente de kicks marcados, percusión hipnótica y grooves constantes que invitan al movimiento sin pausa. Con una esencia arraigada en la cultura underground, su música navega entre el hard techno, el schranz, el neorave y el hard groove, con una identidad oscura pero vibrante.</p>
+          </div>
+          <button class="btn btn--ink copy" type="button" data-copy-from="bioText" data-done="Bio copiada">Copiar bio</button>
 
           <dl class="facts">
             <div><dt>Base</dt><dd>Buenos Aires, Argentina</dd></div>
@@ -214,28 +222,34 @@
       <div class="wrap">
         <header class="head">
           <h2 class="titulo" id="fotos-title">Fotos</h2>
-          <a class="more more--head" href="https://drive.google.com/drive/folders/1-7IrYXT3BnX-Fd2C0S11LaW-b3dNYXuP" target="_blank" rel="noopener">Descargar fotos en alta</a>
+          <div class="head__side">
+            <p class="head__note">Abrí una foto para verla en grande y descargarla en JPG.</p>
+            <p class="head__links">
+              <a class="link" href="https://drive.google.com/drive/folders/1-7IrYXT3BnX-Fd2C0S11LaW-b3dNYXuP" target="_blank" rel="noopener">Todas en alta resolución</a>
+              <a class="link" href="img/logo-martina-hobelar.png" download="martina-hobelar-logo.png">Logo en PNG</a>
+            </p>
+          </div>
         </header>
       </div>
 
       <!-- Las dos que ella marcó como épicas, a todo el ancho -->
       <div class="diptych">
-        <button class="ph" type="button" data-full="img/fotos/03-1800.webp"><img src="img/hero-2.webp" alt="Martina de espaldas en la cabina, frente a la pista iluminada de rojo" width="1600" height="2000" loading="lazy" decoding="async" /></button>
-        <button class="ph" type="button" data-full="img/fotos/06-1800.webp"><img src="img/hero-3.webp" alt="Martina con los brazos en alto bajo los reflectores" width="1600" height="2000" loading="lazy" decoding="async" /></button>
+        <button class="ph" type="button" data-full="img/fotos/03-1800.webp" data-jpg="img/fotos/03.jpg"><img src="img/hero-2.webp" srcset="img/fotos/03-720.webp 720w, img/hero-2.webp 1600w" sizes="(max-width: 699px) 100vw, 50vw" alt="Martina de espaldas en la cabina, frente a la pista iluminada de rojo" width="1600" height="2000" loading="lazy" decoding="async" /></button>
+        <button class="ph" type="button" data-full="img/fotos/06-1800.webp" data-jpg="img/fotos/06.jpg"><img src="img/hero-3.webp" srcset="img/fotos/06-720.webp 720w, img/hero-3.webp 1600w" sizes="(max-width: 699px) 100vw, 50vw" alt="Martina con los brazos en alto bajo los reflectores" width="1600" height="2000" loading="lazy" decoding="async" /></button>
       </div>
 
       <div class="wrap">
         <ul class="grid" id="grid">
-          <li class="g-01"><button class="ph" type="button" data-full="img/fotos/01-1800.webp"><img src="img/fotos/01-720.webp" alt="Martina Høbelar en la cabina, con su nombre proyectado detrás" width="720" height="480" loading="lazy" decoding="async" /></button></li>
-          <li class="g-05"><button class="ph" type="button" data-full="img/fotos/05-1800.webp"><img src="img/fotos/05-720.webp" alt="Martina con auriculares en la cabina, con luz roja" width="720" height="903" loading="lazy" decoding="async" /></button></li>
-          <li class="g-02"><button class="ph" type="button" data-full="img/fotos/02-1800.webp"><img src="img/fotos/02-720.webp" alt="Martina en la cabina de Sangre Club, bajo la gráfica del club" width="720" height="1080" loading="lazy" decoding="async" /></button></li>
-          <li class="g-10"><button class="ph" type="button" data-full="img/fotos/10-1800.webp"><img src="img/fotos/10-720.webp" alt="Martina mezclando en primer plano, con luz roja" width="720" height="480" loading="lazy" decoding="async" /></button></li>
-          <li class="g-04"><button class="ph" type="button" data-full="img/fotos/04-1800.webp"><img src="img/fotos/04-720.webp" alt="Retrato de estudio de Martina, sentada sobre fondo blanco" width="720" height="1080" loading="lazy" decoding="async" /></button></li>
-          <li class="g-11"><button class="ph" type="button" data-full="img/fotos/11-1800.webp"><img src="img/fotos/11-720.webp" alt="Retrato de estudio de Martina, de espaldas, con los tatuajes a la vista" width="720" height="1080" loading="lazy" decoding="async" /></button></li>
-          <li class="g-07"><button class="ph" type="button" data-full="img/fotos/07-1800.webp"><img src="img/fotos/07-720.webp" alt="Retrato de estudio de Martina con vestido de látex y un radiograbador" width="720" height="1080" loading="lazy" decoding="async" /></button></li>
-          <li class="g-09"><button class="ph" type="button" data-full="img/fotos/09-1800.webp"><img src="img/fotos/09-720.webp" alt="Martina de espaldas frente a un salón lleno" width="720" height="906" loading="lazy" decoding="async" /></button></li>
-          <li class="g-12"><button class="ph" type="button" data-full="img/fotos/12-1800.webp"><img src="img/fotos/12-720.webp" alt="Martina con el brazo en alto en la cabina de Sangre Club" width="720" height="1080" loading="lazy" decoding="async" /></button></li>
-          <li class="g-08"><button class="ph" type="button" data-full="img/fotos/08-1800.webp"><img src="img/fotos/08-720.webp" alt="La pista de Sangre Club llena, con luz roja" width="720" height="1080" loading="lazy" decoding="async" /></button></li>
+          <li class="g-01"><button class="ph" type="button" data-full="img/fotos/01-1800.webp" data-jpg="img/fotos/01.jpg"><img src="img/fotos/01-720.webp" srcset="img/fotos/01-720.webp 720w, img/fotos/01-1800.webp 1800w" sizes="(max-width: 699px) calc(100vw - 40px), min(52vw, 760px)" alt="Martina Høbelar en la cabina, con su nombre proyectado detrás" width="720" height="480" loading="lazy" decoding="async" /></button></li>
+          <li class="g-05"><button class="ph" type="button" data-full="img/fotos/05-1800.webp" data-jpg="img/fotos/05.jpg"><img src="img/fotos/05-720.webp" srcset="img/fotos/05-720.webp 720w, img/fotos/05-1800.webp 1076w" sizes="(max-width: 699px) calc(50vw - 26px), min(21vw, 310px)" alt="Martina con auriculares en la cabina, con luz roja" width="720" height="903" loading="lazy" decoding="async" /></button></li>
+          <li class="g-02"><button class="ph" type="button" data-full="img/fotos/02-1800.webp" data-jpg="img/fotos/02.jpg"><img src="img/fotos/02-720.webp" srcset="img/fotos/02-720.webp 720w, img/fotos/02-1800.webp 1365w" sizes="(max-width: 699px) calc(50vw - 26px), min(29vw, 420px)" alt="Martina en la cabina de Sangre Club, bajo la gráfica del club" width="720" height="1080" loading="lazy" decoding="async" /></button></li>
+          <li class="g-10"><button class="ph" type="button" data-full="img/fotos/10-1800.webp" data-jpg="img/fotos/10.jpg"><img src="img/fotos/10-720.webp" srcset="img/fotos/10-720.webp 720w, img/fotos/10-1800.webp 1800w" sizes="(max-width: 699px) calc(100vw - 40px), min(45vw, 645px)" alt="Martina mezclando en primer plano, con luz roja" width="720" height="480" loading="lazy" decoding="async" /></button></li>
+          <li class="g-04"><button class="ph" type="button" data-full="img/fotos/04-1800.webp" data-jpg="img/fotos/04.jpg"><img src="img/fotos/04-720.webp" srcset="img/fotos/04-720.webp 720w, img/fotos/04-1800.webp 1365w" sizes="(max-width: 699px) calc(50vw - 26px), min(29vw, 420px)" alt="Retrato de estudio de Martina, sentada sobre fondo blanco" width="720" height="1080" loading="lazy" decoding="async" /></button></li>
+          <li class="g-11"><button class="ph" type="button" data-full="img/fotos/11-1800.webp" data-jpg="img/fotos/11.jpg"><img src="img/fotos/11-720.webp" srcset="img/fotos/11-720.webp 720w, img/fotos/11-1800.webp 1365w" sizes="(max-width: 699px) calc(50vw - 26px), min(29vw, 420px)" alt="Retrato de estudio de Martina, de espaldas, con los tatuajes a la vista" width="720" height="1080" loading="lazy" decoding="async" /></button></li>
+          <li class="g-07"><button class="ph" type="button" data-full="img/fotos/07-1800.webp" data-jpg="img/fotos/07.jpg"><img src="img/fotos/07-720.webp" srcset="img/fotos/07-720.webp 720w, img/fotos/07-1800.webp 1800w" sizes="(max-width: 699px) calc(100vw - 40px), min(29vw, 420px)" alt="Retrato de estudio de Martina con vestido de látex y un radiograbador" width="720" height="1080" loading="lazy" decoding="async" /></button></li>
+          <li class="g-09"><button class="ph" type="button" data-full="img/fotos/09-1800.webp" data-jpg="img/fotos/09.jpg"><img src="img/fotos/09-720.webp" srcset="img/fotos/09-720.webp 720w, img/fotos/09-1800.webp 1652w" sizes="(max-width: 699px) calc(50vw - 26px), min(37vw, 535px)" alt="Martina de espaldas frente a un salón lleno" width="720" height="906" loading="lazy" decoding="async" /></button></li>
+          <li class="g-12"><button class="ph" type="button" data-full="img/fotos/12-1800.webp" data-jpg="img/fotos/12.jpg"><img src="img/fotos/12-720.webp" srcset="img/fotos/12-720.webp 720w, img/fotos/12-1800.webp 1365w" sizes="(max-width: 699px) calc(50vw - 26px), min(21vw, 310px)" alt="Martina con el brazo en alto en la cabina de Sangre Club" width="720" height="1080" loading="lazy" decoding="async" /></button></li>
+          <li class="g-08"><button class="ph" type="button" data-full="img/fotos/08-1800.webp" data-jpg="img/fotos/08.jpg"><img src="img/fotos/08-720.webp" srcset="img/fotos/08-720.webp 720w, img/fotos/08-1800.webp 1365w" sizes="(max-width: 699px) calc(100vw - 40px), min(21vw, 310px)" alt="La pista de Sangre Club llena, con luz roja" width="720" height="1080" loading="lazy" decoding="async" /></button></li>
         </ul>
       </div>
     </section>
@@ -304,14 +318,27 @@
           <p class="head__note">Fechas, prensa y colaboraciones.</p>
         </header>
 
-        <a class="booking__mail" href="mailto:booking.grooveselections@gmail.com?subject=Booking%20Martina%20H%C3%B8belar">booking.<wbr />grooveselections<wbr />@gmail.com</a>
+        <div class="booking__mailrow">
+          <a class="booking__mail" href="mailto:booking.grooveselections@gmail.com?subject=Booking%20Martina%20H%C3%B8belar">booking.<wbr />grooveselections<wbr />@gmail.com</a>
+          <button class="btn btn--line copy" type="button" data-copy="booking.grooveselections@gmail.com" data-done="Mail copiado">Copiar mail</button>
+        </div>
 
-        <ul class="booking__ways">
-          <li><a href="https://wa.me/5491169229895?text=Hola%2C%20te%20escribo%20por%20una%20fecha%20para%20Martina%20H%C3%B8belar." target="_blank" rel="noopener"><span>WhatsApp</span> +54 9 11 6922 9895</a></li>
-          <li><a href="https://www.instagram.com/martuhobelar" target="_blank" rel="noopener"><span>Instagram</span> @martuhobelar</a></li>
-          <li><a href="https://www.youtube.com/@martuhobelar" target="_blank" rel="noopener"><span>YouTube</span> @martuhobelar</a></li>
-          <li><a href="https://soundcloud.com/martina-hobelar" target="_blank" rel="noopener"><span>SoundCloud</span> martina-hobelar</a></li>
-        </ul>
+        <div class="booking__groups">
+          <div class="booking__group">
+            <h3 class="booking__label">Contacto directo</h3>
+            <ul class="ways">
+              <li><a href="https://wa.me/5491169229895?text=Hola%2C%20te%20escribo%20por%20una%20fecha%20para%20Martina%20H%C3%B8belar." target="_blank" rel="noopener"><span>WhatsApp</span> +54 9 11 6922 9895</a></li>
+              <li><a href="https://www.instagram.com/martuhobelar" target="_blank" rel="noopener"><span>Instagram</span> @martuhobelar</a></li>
+            </ul>
+          </div>
+          <div class="booking__group">
+            <h3 class="booking__label">Escuchar</h3>
+            <ul class="ways">
+              <li><a href="https://www.youtube.com/@martuhobelar" target="_blank" rel="noopener"><span>YouTube</span> @martuhobelar</a></li>
+              <li><a href="https://soundcloud.com/martina-hobelar" target="_blank" rel="noopener"><span>SoundCloud</span> martina-hobelar</a></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -319,19 +346,22 @@
 
   <footer class="foot">
     <div class="wrap foot__row">
-      <p class="foot__sign">Martina Høbelar<img class="gota" src="img/gota.webp" alt="" width="220" height="440" loading="lazy" /></p>
+      <p class="foot__sign" aria-hidden="true">Martina Høbelar<img class="gota" src="img/gota.webp" alt="" width="220" height="440" loading="lazy" /></p>
       <p>© <span id="year">2026</span> Martina Høbelar</p>
       <!-- Crédito de autoría: fijo en todos los sitios -->
       <p class="foot__credit">Sitio web hecho por <a href="https://portfolio-kexxy.vercel.app" target="_blank" rel="noopener">Enzo Diaz Zingaretti</a></p>
     </div>
   </footer>
 
+  <!-- Aviso para lectores de pantalla cuando algo se copia -->
+  <p class="sr-only" id="announcer" role="status" aria-live="polite"></p>
+
   <!-- VISOR DE FOTOS -->
   <dialog class="viewer" id="viewer" aria-label="Visor de fotos">
     <img class="viewer__img" id="viewerImg" alt="" />
     <div class="viewer__bar">
       <span class="viewer__count" id="viewerCount"></span>
-      <a class="viewer__dl" id="viewerDl" href="#" download>Descargar</a>
+      <a class="viewer__dl btn btn--line btn--sm" id="viewerDl" href="#" download>Descargar JPG</a>
       <button class="viewer__btn" id="viewerPrev" type="button" aria-label="Foto anterior">
         <svg viewBox="0 0 24 24" width="20" height="20"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
       </button>
@@ -344,6 +374,6 @@
     </div>
   </dialog>
 
-  <script src="script.js?v=3" defer></script>
+  <script src="script.js?v=4" defer></script>
 </body>
 </html>
