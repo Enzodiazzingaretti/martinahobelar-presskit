@@ -117,17 +117,6 @@
     el.classList.add('is-latiendo');
   }
 
-  // Inicio: cuando la foto y la tipografía ya están, entra con ocho golpes
-  var hero = document.querySelector('.hero');
-  var heroImg = document.getElementById('heroImg');
-  if (hero && heroImg && !reduceMotion) {
-    var ready = [heroImg.decode ? heroImg.decode().catch(function () {}) : Promise.resolve()];
-    if (document.fonts && document.fonts.ready) ready.push(document.fonts.ready);
-    Promise.all(ready).then(function () {
-      setTimeout(function () { beat(hero); }, 350);
-    });
-  }
-
   /* ----------------------------------------------------------
      Sets: un reproductor y la lista; la miniatura se cambia por
      el video recién cuando alguien toca play

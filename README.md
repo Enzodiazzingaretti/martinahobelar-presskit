@@ -6,7 +6,7 @@ Es una sola página estática: sin panel, sin funciones serverless y sin paso de
 
 ## Idea visual
 
-- **El pulso.** El rojo de su presskit 2025 aparece en sus fotos, en una luz que late a los BPM y en un led chico que marca lo activo (la sección en el menú, el set elegido), como los de una cabina. Al entrar, el inicio da ocho golpes a 157 BPM (el primer set) y queda quieto. Al elegir un set, el led de abajo del reproductor titila ocho veces a los BPM de ese set. Con movimiento reducido no late nada.
+- **El led.** El rojo de su presskit 2025 aparece en sus fotos y en un led chico que marca lo activo (la sección en el menú, el set elegido), como los de una cabina. Al elegir un set, el led de abajo del reproductor titila ocho veces a los BPM de ese set. Con movimiento reducido no titila. El inicio no tiene animación.
 - **Sin logo.** Martina pidió sacar la gota de sangre; la pestaña usa la Ø de su apellido.
 - **La tipografía.** Una sola familia, Archivo variable: extra condensada y en mayúsculas para el nombre y los títulos, normal para leer.
 - **El ritmo.** La sala a oscuras, la bio sobre el gris de estudio de su book (con sus dos fotos en zigzag), y las dos fotos que ella marcó como épicas a todo el ancho antes de la grilla.
@@ -35,7 +35,7 @@ sitemap.xml
 
 - **Textos:** directamente en `index.html`.
 - **Sets:** cada fila de la lista (`.track`) lleva el ID del video de YouTube en `data-id` y los BPM en `data-bpm` (el número que usa el latido). La primera es la que aparece cargada en el reproductor; si cambia, cambiar también la miniatura, `#nowName` y `#nowBpm`.
-- **Fotos:** cada foto tiene una miniatura `img/fotos/NN-720.webp`, una versión grande `NN-1800.webp` (la que abre el visor) y `NN.jpg` (la que se descarga). WebP debajo de ~300 KB. Las dos de arriba de la grilla usan `img/hero-2.webp` y `img/hero-3.webp`. El lugar de cada foto en la grilla sale de su clase (`g-01`, `g-05`…) en `style.css`, y su `sizes` en `index.html` acompaña ese ancho.
+- **Fotos:** cada foto tiene una miniatura `img/fotos/NN-720.webp`, una versión grande `NN-1800.webp` (la que abre el visor) y `NN.jpg` (la que se descarga). WebP debajo de ~300 KB. Las dos de arriba de la grilla usan `img/hero-2.webp` y `img/hero-3.webp`. El lugar de cada foto en la grilla sale de su clase (`g-01`, `g-02`…) en `style.css`, y su `sizes` en `index.html` acompaña ese ancho.
 - **Bio:** las dos fotos son `img/bio-a.webp` (de pie) y `img/bio-b.webp` (recostada, recortada a 5:4). Abren el visor y se descargan completas (`fotos/13` y `fotos/14`).
 - **Rider:** la cabina es `img/rider-cabina.webp`, sacada del diagrama del presskit de Kexxy y adaptada a su setup: CDJ, mixer, CDJ y CDJ, sin texto en la imagen. Los modelos van escritos en la lista de al lado.
 - **Imágenes y caché:** el navegador guarda las imágenes un día. Si reemplazás una manteniendo el nombre, sumale `?v=` con un número nuevo donde se usa en `index.html` (como la 04 y la 07).
@@ -66,4 +66,4 @@ El pie lleva “Sitio web hecho por Enzo Diaz Zingaretti” con enlace a https:/
 - **Bio:** es la que mandó; solo se corrigieron mayúsculas (Co-founder, Sangre Club, Groove Selections) y la puntuación del segundo párrafo. Es organizadora de Groove Selections.
 - **Rider:** la tercera CDJ no es opcional; “para cambios en el setup, consultar” queda.
 - **Booking:** revisó la sección y sumó el Instagram de bookings, @grooveselectionsbookings.
-- **Fotos:** la de látex con el radiograbador va en blanco y negro.
+- **Fotos:** la de látex con el radiograbador va en blanco y negro, y sale la de auriculares con luz roja.

@@ -2,8 +2,8 @@
    Martina Høbelar — press kit
 
    La sala a oscuras. El rojo de su presskit 2025 aparece en sus
-   fotos, en la luz que late con sus BPM y en un led chico que
-   marca lo que está activo, como los de una cabina.
+   fotos y en un led chico que marca lo que está activo, como los
+   de una cabina.
    Una sola familia, Archivo variable: extra condensada y en
    mayúsculas para el nombre y los títulos, normal para leer.
    ========================================================== */
@@ -388,16 +388,6 @@ button { font-family: inherit; }
     linear-gradient(0deg, #000 0%, rgba(0, 0, 0, 0.84) 24%, rgba(0, 0, 0, 0.2) 54%, rgba(0, 0, 0, 0) 70%);
 }
 
-/* La luz roja que sube del piso con cada golpe */
-.hero__light {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0;
-  mix-blend-mode: screen;
-  background: radial-gradient(70% 60% at 50% 104%, rgba(200, 16, 26, 0.95), rgba(200, 16, 26, 0.35) 45%, rgba(200, 16, 26, 0) 75%);
-}
 
 .hero__content {
   width: 100%;
@@ -437,21 +427,11 @@ button { font-family: inherit; }
   margin: 0;
 }
 
-/* Ocho golpes al entrar, a los BPM del primer set, y quieto */
-@keyframes golpe-luz {
-  from { opacity: 0.85; }
-  to { opacity: 0; }
-}
+/* El led del set elegido titila ocho veces a sus BPM, y queda quieto */
 @keyframes golpe-led {
   from { opacity: 1; box-shadow: 0 0 12px 4px rgba(200, 16, 26, 0.9); }
   to { opacity: 0.3; box-shadow: 0 0 0 0 rgba(200, 16, 26, 0); }
 }
-@keyframes golpe-foto {
-  from { transform: scale(1.016); }
-  to { transform: scale(1); }
-}
-.hero.is-latiendo .hero__light { animation: golpe-luz calc(60s / var(--bpm)) var(--ataque) 8; }
-.hero.is-latiendo .hero__photo img { animation: golpe-foto calc(60s / var(--bpm)) var(--ataque) 8; }
 
 /* ----------------------------------------------------------
    Secciones
@@ -766,15 +746,14 @@ button { font-family: inherit; }
 
 /* Composición de editorial: cada foto con su ancho y su lugar */
 .g-01 { grid-column: 1 / 8; align-self: end; }
-.g-05 { grid-column: 9 / 12; }
-.g-02 { grid-column: 2 / 6; }
+.g-02 { grid-column: 9 / 12; }
+.g-12 { grid-column: 2 / 6; }
 .g-10 { grid-column: 7 / 13; align-self: center; }
 .g-04 { grid-column: 1 / 5; }
 .g-11 { grid-column: 5 / 9; margin-top: 12%; }
 .g-07 { grid-column: 9 / 13; }
 .g-09 { grid-column: 1 / 6; }
-.g-12 { grid-column: 7 / 10; align-self: center; }
-.g-08 { grid-column: 10 / 13; align-self: end; }
+.g-08 { grid-column: 8 / 12; align-self: center; }
 
 /* ----------------------------------------------------------
    Rider
@@ -1010,11 +989,10 @@ button { font-family: inherit; }
   /* de a una a todo el ancho, de a dos escalonadas */
   .grid > .g-01,
   .grid > .g-10,
-  .grid > .g-07,
-  .grid > .g-08 { grid-column: 1 / -1; }
-  .grid > .g-02,
+  .grid > .g-07 { grid-column: 1 / -1; }
+  .grid > .g-12,
   .grid > .g-11,
-  .grid > .g-12 { margin-top: 32%; }
+  .grid > .g-08 { margin-top: 32%; }
 
   .facts div,
   .signed div,
