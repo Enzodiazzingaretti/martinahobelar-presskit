@@ -14,16 +14,27 @@ Es una sola página estática: sin panel, sin funciones serverless y sin paso de
 ## Pensado para quien la contrata
 
 - **Booking siempre a mano.** Botón en el inicio y, al bajar, en la barra; en la sección de booking queda lleno.
-- **Copiar el mail y la bio.** Muchos no tienen app de correo configurada en la compu, y la bio la copia quien arma la difusión.
+- **Consulta directa.** En booking se elige qué se consulta (fecha, prensa o colaboración) y se completan los datos: nombre, productora, fecha, ciudad, venue, capacidad, tipo de evento y mensaje. La consulta se abre armada en el mail de quien escribe (o en Gmail, o en WhatsApp), con un asunto ordenable como `Booking · Martina Høbelar · 12/12/2026 · Rosario, Argentina`, así la respuesta le llega directo a su casilla. No pasa por ningún servidor ni servicio externo. Si la compu no tiene app de mail, la página lo detecta y ofrece Gmail o copiar la consulta. Debajo de la fecha aparece el día escrito, para que no haya dudas entre día y mes. El borrador queda en la pestaña por si el celular recarga la página al volver del mail.
+- **Contacto directo al lado.** Mail (con botón para copiarlo), WhatsApp e Instagram, a mano mientras se completa la consulta.
+- **Copiar la bio completa o la corta.** La corta es el primer párrafo, para flyers y posteos.
 - **Fotos en JPG.** El visor muestra WebP pero descarga JPG de hasta 3000 px, que cualquier programa abre. Arriba de la grilla está la carpeta en alta resolución.
+- **Imprimir o guardar en PDF.** Sale una hoja de prensa en blanco y negro (nombre, bio, sets, rider, enlace a las fotos y contacto), sin fotos ni formulario, para quien arma la producción.
 - **Todo se puede tocar.** Botones y enlaces de 44 px de alto como mínimo; fotos nítidas en pantallas de alta densidad (srcset) sin cargar de más en el celular.
+
+## Detalles de diseño
+
+- **Etiquetas.** Los rótulos (fichas, rider, formulario, contacto) van chicos, en mayúsculas y con aire, como la serigrafía de un equipo, para separarlos del dato.
+- **Sangría óptica.** El nombre del inicio y del pie está justificado por la tinta, no por la caja: arranca y termina a filo del texto y de la línea. Los títulos se corren lo que mide la sangría de su primera letra (la S menos que la B, la F o la R).
+- **Leds.** En el formulario, las teclas de tipo de evento tienen su led apagado y se enciende el elegido; un campo que falta se marca con borde rojo y el led al lado del aviso.
+- **Enlaces que salen del sitio** llevan una flecha chica.
 
 ## Estructura
 
 ```
 index.html     todo el contenido: textos, sets, fotos, rider y booking
-style.css      estilos
-script.js      comportamiento: latido, reproductor de sets, visor de fotos, copiar mail y bio, menú y reintento de fotos
+404.html       página para direcciones que no existen
+style.css      estilos (incluye la versión para imprimir)
+script.js      comportamiento: latido, reproductor de sets, visor de fotos, consulta de booking, copiar mail y bio, menú y reintento de fotos
 fonts/         Archivo variable (woff2, solo latín) con su licencia OFL
 img/           fotos en WebP y JPG, la cabina del rider, íconos y vista previa para compartir (og.jpg)
 vercel.json    encabezados de seguridad y caché
@@ -37,6 +48,7 @@ sitemap.xml
 - **Sets:** cada fila de la lista (`.track`) lleva el ID del video de YouTube en `data-id` y los BPM en `data-bpm` (el número que usa el latido). La primera es la que aparece cargada en el reproductor; si cambia, cambiar también la miniatura, `#nowName` y `#nowBpm`.
 - **Fotos:** cada foto tiene una miniatura `img/fotos/NN-720.webp`, una versión grande `NN-1800.webp` (la que abre el visor) y `NN.jpg` (la que se descarga). WebP debajo de ~300 KB. Las dos de arriba de la grilla usan `img/hero-2.webp` y `img/hero-3.webp`. El lugar de cada foto en la grilla sale de su clase (`g-01`, `g-02`…) en `style.css`, y su `sizes` en `index.html` acompaña ese ancho.
 - **Bio:** las dos fotos son `img/bio-a.webp` (de pie) y `img/bio-b.webp` (recostada, recortada a 5:4). Abren el visor y se descargan completas (`fotos/13` y `fotos/14`).
+- **Booking:** el mail y el WhatsApp están en `index.html` (contacto directo y menú del celular) y en `script.js` (`MAIL` y `WHATSAPP`, al principio de la consulta). Si cambian, van en los dos. Los textos que arma la consulta (saludo, asunto, qué datos pide cada motivo) están en `MOTIVOS`, en `script.js`.
 - **Rider:** la cabina es `img/rider-cabina.webp`, sacada del diagrama del presskit de Kexxy y adaptada a su setup: CDJ, mixer, CDJ y CDJ, sin texto en la imagen. Los modelos van escritos en la lista de al lado.
 - **Imágenes y caché:** el navegador guarda las imágenes un día. Si reemplazás una manteniendo el nombre, sumale `?v=` con un número nuevo donde se usa en `index.html` (como la 04 y la 07).
 - **Inicio:** la foto es `img/hero-1.webp` (y `hero-1-2880.webp` para pantallas de alta densidad), con un recorte vertical para celular, `hero-1-m.webp`.
@@ -60,6 +72,13 @@ El pie lleva “Sitio web hecho por Enzo Diaz Zingaretti” con enlace a https:/
 - **Fotos en alta:** el botón apunta a su carpeta FOTOS de Drive, que es pública con el enlace.
 - **SoundCloud:** el enlace a soundcloud.com/martina-hobelar no lo mandó ella; es su perfil público.
 - **Créditos de fotos:** si los fotógrafos quieren crédito al publicar, sumarlo en el visor o en el texto de la sección.
+
+## Para sumar con material de Martina
+
+- **Fechas destacadas:** clubes y fiestas donde tocó (es lo primero que mira una productora para decidir).
+- **Bio en inglés:** para fechas afuera; se puede sumar un selector ES / EN.
+- **Rider completo:** monitores, altura de cabina, hospitalidad, si tiene requisitos.
+- **Formulario que envía solo:** hoy la consulta sale desde el mail o WhatsApp de quien escribe. Para que se envíe sin salir de la página hace falta un servicio de formularios, que se activa con la cuenta del mail de bookings.
 
 ## Lo que ya confirmó (octubre 2026)
 

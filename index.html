@@ -36,7 +36,7 @@
   <link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" as="image" imagesrcset="img/hero-1.webp 1920w, img/hero-1-2880.webp 2880w" imagesizes="100vw" media="(min-width: 700px)" fetchpriority="high" />
   <link rel="preload" as="image" href="img/hero-1-m.webp" media="(max-width: 699px)" fetchpriority="high" />
-  <link rel="stylesheet" href="style.css?v=6" />
+  <link rel="stylesheet" href="style.css?v=7" />
 
   <script type="application/ld+json">
   {
@@ -117,7 +117,7 @@
     <section class="section sets" id="sets" aria-labelledby="sets-title">
       <div class="wrap">
         <header class="head">
-          <h2 class="titulo" id="sets-title">Sets</h2>
+          <h2 class="titulo titulo--s" id="sets-title">Sets</h2>
           <p class="head__note">Sus sets filmados suman más de 1,6 millones de vistas en YouTube.</p>
         </header>
 
@@ -137,45 +137,49 @@
           </div>
 
           <div class="sets__list">
+            <p class="tracks__head" aria-hidden="true"><span>Set</span><span>BPM</span></p>
             <ol class="tracks" id="tracks">
               <li><button class="track" type="button" data-id="n2j-JuCR4as" data-bpm="157" aria-current="true">
                 <span class="track__name">120bpm studio <small>Su set más visto</small></span>
-                <span class="track__bpm">157+</span>
+                <span class="track__bpm">157+<span class="sr-only"> BPM</span></span>
               </button></li>
               <li><button class="track" type="button" data-id="VNgkhuu-yEw" data-bpm="155">
                 <span class="track__name">Estudio 613</span>
-                <span class="track__bpm">155+</span>
+                <span class="track__bpm">155+<span class="sr-only"> BPM</span></span>
               </button></li>
               <li><button class="track" type="button" data-id="sRVCTSkxrvw" data-bpm="146">
                 <span class="track__name">Voragine studio <small>Techno</small></span>
-                <span class="track__bpm">146+</span>
+                <span class="track__bpm">146+<span class="sr-only"> BPM</span></span>
               </button></li>
               <li><button class="track" type="button" data-id="GW-IPbuvJ1s" data-bpm="159">
                 <span class="track__name">Promixlive studio</span>
-                <span class="track__bpm">159+</span>
+                <span class="track__bpm">159+<span class="sr-only"> BPM</span></span>
               </button></li>
               <li><button class="track" type="button" data-id="LoGuliua2fk" data-bpm="154">
                 <span class="track__name">120bpm studio <small>Schranz</small></span>
-                <span class="track__bpm">154+</span>
+                <span class="track__bpm">154+<span class="sr-only"> BPM</span></span>
               </button></li>
               <li><button class="track" type="button" data-id="PhIJKl_IIYc" data-bpm="149">
                 <span class="track__name">Tessa <small>Hard groove</small></span>
-                <span class="track__bpm">149+</span>
+                <span class="track__bpm">149+<span class="sr-only"> BPM</span></span>
               </button></li>
               <li><button class="track" type="button" data-id="cDr4Sxi5QDE" data-bpm="165">
                 <span class="track__name">WarpStudios <small>por Kagorii</small></span>
-                <span class="track__bpm">165+</span>
+                <span class="track__bpm">165+<span class="sr-only"> BPM</span></span>
               </button></li>
               <li><button class="track" type="button" data-id="vUzrq51sCeU" data-bpm="163">
                 <span class="track__name">Muelle <small>Groove Selections y Be Techno</small></span>
-                <span class="track__bpm">163+</span>
+                <span class="track__bpm">163+<span class="sr-only"> BPM</span></span>
               </button></li>
               <li><button class="track" type="button" data-id="smN36SbSzqY">
                 <span class="track__name">Sangre Club <small>con Svetec</small></span>
                 <span class="track__bpm track__bpm--club">En club</span>
               </button></li>
             </ol>
-            <a class="link" href="https://www.youtube.com/@martuhobelar" target="_blank" rel="noopener">Ver el canal de YouTube</a>
+            <p class="sets__more">
+              <a class="link ext" href="https://www.youtube.com/@martuhobelar" target="_blank" rel="noopener">Canal de YouTube</a>
+              <a class="link ext" href="https://soundcloud.com/martina-hobelar" target="_blank" rel="noopener">SoundCloud</a>
+            </p>
           </div>
         </div>
       </div>
@@ -187,12 +191,15 @@
         <div class="bio__intro">
           <h2 class="titulo" id="bio-title">Bio</h2>
           <div class="bio__body" id="bioText">
-            <p class="bio__lead">Martina Høbelar, DJ y productora argentina, nacida el 18 de enero de 2004. Co-founder de Sangre Club y organizadora de Groove Selections. Oriunda de Buenos Aires.</p>
+            <p class="bio__lead" id="bioLead">Martina Høbelar, DJ y productora argentina, nacida el 18 de enero de 2004. Co-founder de Sangre Club y organizadora de Groove Selections. Oriunda de Buenos Aires.</p>
             <p>El sonido de Martina Høbelar se caracteriza por una energía cruda, intensa y profundamente orientada a la pista. Su propuesta transita entre ritmos contundentes, percusiones hipnóticas y una atmósfera de tensión constante, construyendo sets que combinan fuerza, velocidad y movimiento.</p>
             <p>Con una marcada influencia hacia la cultura rave, Martina, con sus producciones y sus sets, explora distintas capas de intensidad sin perder el groove. Su selección se mueve entre texturas oscuras, golpes precisos y secuencias repetitivas que generan un estado de inmersión progresiva.</p>
             <p>Más que una sucesión de tracks, sus sets funcionan como un recorrido de energía: una construcción dinámica en la que el ritmo se vuelve protagonista y la pista, el espacio donde todo termina de tomar forma.</p>
           </div>
-          <button class="btn btn--ink copy" type="button" data-copy-from="bioText" data-done="Bio copiada">Copiar bio</button>
+          <p class="bio__copy">
+            <button class="btn btn--ink copy" type="button" data-copy-from="bioText" data-done="Bio copiada">Copiar bio completa</button>
+            <button class="btn btn--ink copy" type="button" data-copy-from="bioLead" data-done="Bio corta copiada">Copiar bio corta</button>
+          </p>
         </div>
 
         <figure class="bio__photo bio__photo--a">
@@ -228,7 +235,7 @@
           <div class="head__side">
             <p class="head__note">Abrí una foto para verla en grande y descargarla en JPG.</p>
             <p class="head__links">
-              <a class="link" href="https://drive.google.com/drive/folders/1-7IrYXT3BnX-Fd2C0S11LaW-b3dNYXuP" target="_blank" rel="noopener">Todas en alta resolución</a>
+              <a class="link ext" href="https://drive.google.com/drive/folders/1-7IrYXT3BnX-Fd2C0S11LaW-b3dNYXuP" target="_blank" rel="noopener">Todas en alta resolución</a>
             </p>
           </div>
         </header>
@@ -277,7 +284,8 @@
       </div>
     </section>
 
-    <!-- BOOKING -->
+    <!-- BOOKING: la consulta se arma acá y sale desde el mail, Gmail o WhatsApp
+         de quien escribe. No pasa por ningún servidor. Al lado, el contacto directo. -->
     <section class="section booking" id="booking" aria-labelledby="booking-title">
       <div class="wrap">
         <header class="head">
@@ -285,25 +293,96 @@
           <p class="head__note">Fechas, prensa y colaboraciones.</p>
         </header>
 
-        <div class="booking__mailrow">
-          <a class="booking__mail" href="mailto:booking.grooveselections@gmail.com?subject=Booking%20Martina%20H%C3%B8belar">booking.<wbr />grooveselections<wbr />@gmail.com</a>
-          <button class="btn btn--line copy" type="button" data-copy="booking.grooveselections@gmail.com" data-done="Mail copiado">Copiar mail</button>
-        </div>
+        <div class="booking__grid">
+          <form class="ask" id="ask" novalidate aria-label="Consulta de booking">
+            <p class="ask__lead">Completá los datos y la consulta queda lista para mandar desde tu mail o tu WhatsApp.</p>
 
-        <div class="booking__groups">
-          <div class="booking__group">
-            <h3 class="booking__label">Contacto directo</h3>
+            <fieldset class="ask__set">
+              <legend class="ask__legend"><span class="etiqueta">Consulta por</span></legend>
+              <div class="seg">
+                <label><input type="radio" name="motivo" value="fecha" checked /><span>Fecha</span></label>
+                <label><input type="radio" name="motivo" value="prensa" /><span>Prensa</span></label>
+                <label><input type="radio" name="motivo" value="colab" /><span>Colaboración</span></label>
+              </div>
+            </fieldset>
+
+            <div class="ask__grid">
+              <div class="field" data-field="nombre">
+                <label class="field__top" for="f-nombre"><span class="etiqueta">Nombre</span><span class="field__opc" hidden>Opcional</span></label>
+                <input class="campo" id="f-nombre" name="nombre" type="text" autocomplete="name" maxlength="80" required aria-describedby="e-nombre" />
+                <p class="field__error" id="e-nombre" hidden><span class="led" aria-hidden="true"></span><span></span></p>
+              </div>
+
+              <div class="field" data-field="org">
+                <label class="field__top" for="f-org"><span class="etiqueta" id="l-org">Productora o fiesta</span><span class="field__opc">Opcional</span></label>
+                <input class="campo" id="f-org" name="org" type="text" autocomplete="organization" maxlength="80" aria-describedby="e-org" />
+                <p class="field__error" id="e-org" hidden><span class="led" aria-hidden="true"></span><span></span></p>
+              </div>
+
+              <div class="ask__evento" id="askEvento">
+                <div class="field" data-field="fecha">
+                  <label class="field__top" for="f-fecha"><span class="etiqueta">Fecha</span><span class="field__opc" hidden>Opcional</span></label>
+                  <input class="campo campo--fecha" id="f-fecha" name="fecha" type="date" required aria-describedby="h-fecha e-fecha" />
+                  <p class="field__hint" id="h-fecha">Si todavía no está confirmada, la tentativa.</p>
+                  <p class="field__error" id="e-fecha" hidden><span class="led" aria-hidden="true"></span><span></span></p>
+                </div>
+
+                <div class="field" data-field="ciudad">
+                  <label class="field__top" for="f-ciudad"><span class="etiqueta">Ciudad y país</span><span class="field__opc" hidden>Opcional</span></label>
+                  <input class="campo" id="f-ciudad" name="ciudad" type="text" autocomplete="off" maxlength="80" required aria-describedby="e-ciudad" />
+                  <p class="field__error" id="e-ciudad" hidden><span class="led" aria-hidden="true"></span><span></span></p>
+                </div>
+
+                <div class="field" data-field="venue">
+                  <label class="field__top" for="f-venue"><span class="etiqueta">Club o venue</span><span class="field__opc">Opcional</span></label>
+                  <input class="campo" id="f-venue" name="venue" type="text" autocomplete="off" maxlength="80" />
+                </div>
+
+                <div class="field" data-field="capacidad">
+                  <label class="field__top" for="f-capacidad"><span class="etiqueta">Capacidad</span><span class="field__opc">Opcional</span></label>
+                  <input class="campo" id="f-capacidad" name="capacidad" type="text" inputmode="numeric" autocomplete="off" maxlength="12" />
+                </div>
+
+                <fieldset class="ask__set field--full">
+                  <legend class="ask__legend"><span class="field__top"><span class="etiqueta">Tipo de evento</span><span class="field__opc">Opcional</span></span></legend>
+                  <div class="chips">
+                    <label><input type="radio" name="tipo" value="Club" /><span>Club</span></label>
+                    <label><input type="radio" name="tipo" value="Festival" /><span>Festival</span></label>
+                    <label><input type="radio" name="tipo" value="Streaming" /><span>Streaming</span></label>
+                    <label><input type="radio" name="tipo" value="Evento privado" /><span>Privado</span></label>
+                    <label><input type="radio" name="tipo" value="Otro" /><span>Otro</span></label>
+                  </div>
+                </fieldset>
+              </div>
+
+              <div class="field field--full" data-field="mensaje">
+                <label class="field__top" for="f-mensaje"><span class="etiqueta">Mensaje</span><span class="field__opc">Opcional</span></label>
+                <textarea class="campo" id="f-mensaje" name="mensaje" rows="5" maxlength="1000" aria-describedby="h-mensaje e-mensaje"></textarea>
+                <p class="field__hint" id="h-mensaje">Line-up, horario del set, propuesta o lo que quieras sumar.</p>
+                <p class="field__error" id="e-mensaje" hidden><span class="led" aria-hidden="true"></span><span></span></p>
+              </div>
+            </div>
+
+            <div class="ask__actions">
+              <button class="btn btn--solid" type="submit">Enviar por mail</button>
+              <button class="btn btn--line" type="button" data-via="whatsapp">Enviar por WhatsApp</button>
+            </div>
+            <p class="ask__alt">
+              <span>¿No se abre tu app de mail?</span>
+              <button class="ask__link" type="button" data-via="gmail">Abrir en Gmail</button>
+              <button class="ask__link" type="button" data-via="copiar">Copiar la consulta</button>
+            </p>
+            <p class="ask__status" id="askStatus" role="status" aria-live="polite"></p>
+          </form>
+
+          <div class="direct">
+            <h3 class="etiqueta" id="direct-title">Contacto directo</h3>
+            <a class="direct__mail" href="mailto:booking.grooveselections@gmail.com?subject=Booking%20Martina%20H%C3%B8belar">booking.grooveselections<wbr />@gmail.com</a>
+            <button class="btn btn--line btn--sm copy" type="button" data-copy="booking.grooveselections@gmail.com" data-done="Mail copiado">Copiar mail</button>
             <ul class="ways">
-              <li><a href="https://wa.me/5491169229895?text=Hola%2C%20te%20escribo%20por%20una%20fecha%20para%20Martina%20H%C3%B8belar." target="_blank" rel="noopener"><span class="ways__label">WhatsApp</span> <span class="ways__value">+54 9 11 6922 9895</span></a></li>
-              <li><a href="https://www.instagram.com/martuhobelar" target="_blank" rel="noopener"><span class="ways__label">Instagram</span> <span class="ways__value">@martuhobelar</span></a></li>
-              <li><a href="https://www.instagram.com/grooveselectionsbookings" target="_blank" rel="noopener"><span class="ways__label">Instagram de bookings</span> <span class="ways__value">@grooveselectionsbookings</span></a></li>
-            </ul>
-          </div>
-          <div class="booking__group">
-            <h3 class="booking__label">Escuchar</h3>
-            <ul class="ways">
-              <li><a href="https://www.youtube.com/@martuhobelar" target="_blank" rel="noopener"><span class="ways__label">YouTube</span> <span class="ways__value">@martuhobelar</span></a></li>
-              <li><a href="https://soundcloud.com/martina-hobelar" target="_blank" rel="noopener"><span class="ways__label">SoundCloud</span> <span class="ways__value">martina-hobelar</span></a></li>
+              <li><a class="ext" href="https://wa.me/5491169229895?text=Hola%2C%20te%20escribo%20por%20una%20fecha%20para%20Martina%20H%C3%B8belar." target="_blank" rel="noopener"><span class="etiqueta">WhatsApp</span><span class="ways__value">+54 9 11 6922 9895</span></a></li>
+              <li><a class="ext" href="https://www.instagram.com/martuhobelar" target="_blank" rel="noopener"><span class="etiqueta">Instagram</span><span class="ways__value">@martuhobelar</span></a></li>
+              <li><a class="ext" href="https://www.instagram.com/grooveselectionsbookings" target="_blank" rel="noopener"><span class="etiqueta">Instagram de bookings</span><span class="ways__value">@grooveselectionsbookings</span></a></li>
             </ul>
           </div>
         </div>
@@ -315,7 +394,12 @@
   <footer class="foot">
     <div class="wrap foot__row">
       <p class="foot__sign" aria-hidden="true">Martina Høbelar</p>
-      <p>© <span id="year">2026</span> Martina Høbelar</p>
+      <p class="foot__copy">© <span id="year">2026</span> Martina Høbelar</p>
+      <ul class="foot__social" aria-label="Redes">
+        <li><a class="ext" href="https://www.instagram.com/martuhobelar" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a class="ext" href="https://www.youtube.com/@martuhobelar" target="_blank" rel="noopener">YouTube</a></li>
+        <li><a class="ext" href="https://soundcloud.com/martina-hobelar" target="_blank" rel="noopener">SoundCloud</a></li>
+      </ul>
       <!-- Crédito de autoría: fijo en todos los sitios -->
       <p class="foot__credit">Sitio web hecho por <a href="https://portfolio-kexxy.vercel.app" target="_blank" rel="noopener">Enzo Diaz Zingaretti</a></p>
     </div>
@@ -342,6 +426,6 @@
     </div>
   </dialog>
 
-  <script src="script.js?v=6" defer></script>
+  <script src="script.js?v=7" defer></script>
 </body>
 </html>

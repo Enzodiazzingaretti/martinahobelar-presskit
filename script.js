@@ -137,7 +137,8 @@
     return {
       name: nameEl.firstChild.textContent.trim(),
       bpm: bpm ? Number(bpm) : null,
-      label: btn.querySelector('.track__bpm').textContent.trim()
+      // el número sin el “BPM” oculto que leen los lectores de pantalla
+      label: btn.querySelector('.track__bpm').firstChild.textContent.trim()
     };
   }
 
@@ -221,8 +222,10 @@
     btn.addEventListener('click', function () {
       var text = btn.dataset.copy;
       if (btn.dataset.copyFrom) {
+        // la bio completa son todos sus párrafos; la corta, el primero
         var src = document.getElementById(btn.dataset.copyFrom);
-        text = Array.prototype.map.call(src.querySelectorAll('p'), function (p) {
+        var ps = src.matches('p') ? [src] : src.querySelectorAll('p');
+        text = Array.prototype.map.call(ps, function (p) {
           return p.textContent.trim();
         }).join('\n\n');
       }
@@ -242,6 +245,298 @@
       });
     });
   });
+
+  /* ----------------------------------------------------------
+     Consulta de booking: se arma acá con los datos del evento y
+     se abre lista para enviar en el mail, Gmail o WhatsApp de
+     quien escribe, así la respuesta le llega a su casilla. No
+     pasa por ningún servidor; el borrador queda solo en esta
+     pestaña por si el celular recarga la página.
+     ---------------------------------------------------------- */
+  var ask = document.getElementById('ask');
+
+  if (ask) (function () {
+    var MAIL = 'booking.grooveselections@gmail.com';
+    var WHATSAPP = '5491169229895';
+    var BORRADOR = 'mh-consulta';
+
+    var MOTIVOS = {
+      fecha: {
+        asunto: 'Booking',
+        intro: 'Hola, te escribo por una fecha para Martina Høbelar.',
+        org: 'Productora o fiesta',
+        hint: 'Line-up, horario del set, propuesta o lo que quieras sumar.',
+        piden: ['nombre', 'fecha', 'ciudad']
+      },
+      prensa: {
+        asunto: 'Prensa',
+        intro: 'Hola, te escribo por una nota con Martina Høbelar.',
+        org: 'Medio',
+        hint: 'De qué se trata la nota y para cuándo la necesitás.',
+        piden: ['nombre', 'org', 'mensaje']
+      },
+      colab: {
+        asunto: 'Colaboración',
+        intro: 'Hola, te escribo por una colaboración con Martina Høbelar.',
+        org: 'Proyecto o sello',
+        hint: 'Contanos la idea.',
+        piden: ['nombre', 'mensaje']
+      }
+    };
+
+    var FALTA = {
+      nombre: 'Escribí tu nombre.',
+      org: 'Escribí el nombre del medio.',
+      fecha: 'Elegí la fecha del evento.',
+      ciudad: 'Escribí la ciudad.',
+      mensaje: 'Contanos de qué se trata.'
+    };
+
+    var fields = {};
+    Array.prototype.forEach.call(ask.querySelectorAll('[data-field]'), function (box) {
+      fields[box.dataset.field] = {
+        box: box,
+        input: box.querySelector('.campo'),
+        opc: box.querySelector('.field__opc'),
+        error: box.querySelector('.field__error')
+      };
+    });
+    var order = Object.keys(fields); // en el orden de la página
+    var evento = document.getElementById('askEvento');
+    var orgLabel = document.getElementById('l-org');
+    var msgHint = document.getElementById('h-mensaje');
+    var dateHint = document.getElementById('h-fecha');
+    var dateHintText = dateHint.textContent;
+    var status = document.getElementById('askStatus');
+    var date = fields.fecha.input;
+    var reduce = reduceMotion ? 'auto' : 'smooth';
+
+    var LARGA = new Intl.DateTimeFormat('es-AR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+    var CORTA = new Intl.DateTimeFormat('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'UTC' });
+
+    function fmt(v, f) {
+      var d = new Date(v + 'T00:00:00Z');
+      return isNaN(d.getTime()) ? v : f.format(d);
+    }
+    function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+    // hoy, en la zona de quien mira: una fecha que ya pasó no se puede elegir
+    function today() {
+      var d = new Date();
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    }
+    date.min = today();
+
+    function val(k) { return fields[k] ? fields[k].input.value.trim() : ''; }
+    function checked(name) {
+      var r = ask.querySelector('input[name="' + name + '"]:checked');
+      return r ? r.value : '';
+    }
+    function motivo() { return MOTIVOS[checked('motivo')] ? checked('motivo') : 'fecha'; }
+
+    function say(text, alerta) {
+      status.textContent = text;
+      status.classList.toggle('is-alerta', !!alerta);
+    }
+
+    function setError(k, msg) {
+      var f = fields[k];
+      f.box.classList.add('is-error');
+      f.input.setAttribute('aria-invalid', 'true');
+      f.error.lastElementChild.textContent = msg;
+      f.error.hidden = false;
+    }
+    function clearError(k) {
+      var f = fields[k];
+      if (!f.error) return;
+      f.box.classList.remove('is-error');
+      f.input.removeAttribute('aria-invalid');
+      f.error.lastElementChild.textContent = '';
+      f.error.hidden = true;
+    }
+
+    // qué le falta a un campo, según lo que se consulta
+    function problema(k) {
+      if (MOTIVOS[motivo()].piden.indexOf(k) === -1) return '';
+      if (k === 'fecha') {
+        if (date.validity && date.validity.badInput) return 'Revisá la fecha.';
+        if (!val('fecha')) return FALTA.fecha;
+        if (val('fecha') < date.min) return 'Esa fecha ya pasó.';
+        return '';
+      }
+      return val(k) ? '' : FALTA[k];
+    }
+
+    function check() {
+      var bad = [];
+      order.forEach(function (k) {
+        var p = problema(k);
+        if (p) { setError(k, p); bad.push(k); } else clearError(k);
+      });
+      return bad;
+    }
+
+    function lista(ks) {
+      var n = ks.map(function (k) { return k === 'org' ? 'medio' : k; });
+      return n.length > 1 ? n.slice(0, -1).join(', ') + ' y ' + n[n.length - 1] : n[0];
+    }
+
+    function applyMotivo() {
+      var k = motivo();
+      var m = MOTIVOS[k];
+      evento.hidden = k !== 'fecha';
+      order.forEach(function (f) {
+        var on = m.piden.indexOf(f) !== -1;
+        fields[f].input.required = on;
+        if (fields[f].opc) fields[f].opc.hidden = on;
+        clearError(f);
+      });
+      orgLabel.textContent = m.org;
+      msgHint.textContent = m.hint;
+      say('');
+    }
+
+    // debajo de la fecha, el día escrito: así no hay dudas entre día y mes
+    function showDate() {
+      var v = date.value;
+      date.classList.toggle('is-empty', !v);
+      var ok = v && v >= date.min;
+      dateHint.textContent = ok ? cap(fmt(v, LARGA)) : dateHintText;
+      dateHint.classList.toggle('is-dato', !!ok);
+    }
+
+    function compose(negrita) {
+      var k = motivo();
+      var m = MOTIVOS[k];
+      function linea(label, v) { return (negrita ? '*' + label + ':* ' : label + ': ') + v; }
+      var lines = [m.intro, '', linea('Nombre', val('nombre'))];
+      var asunto = [m.asunto, 'Martina Høbelar'];
+      if (val('org')) lines.push(linea(m.org, val('org')));
+      if (k === 'fecha') {
+        lines.push(linea('Fecha', fmt(val('fecha'), LARGA)));
+        lines.push(linea('Ciudad', val('ciudad')));
+        if (val('venue')) lines.push(linea('Club o venue', val('venue')));
+        if (val('capacidad')) lines.push(linea('Capacidad', val('capacidad') + (/^\d[\d.,]*$/.test(val('capacidad')) ? ' personas' : '')));
+        if (checked('tipo')) lines.push(linea('Tipo de evento', checked('tipo')));
+        asunto.push(fmt(val('fecha'), CORTA), val('ciudad'));
+      } else if (val('org')) {
+        asunto.push(val('org'));
+      }
+      if (val('mensaje')) lines.push('', val('mensaje'));
+      return { asunto: asunto.join(' · '), texto: lines.join('\n') };
+    }
+
+    function abrir(url, nueva) {
+      var a = document.createElement('a');
+      a.href = url;
+      if (nueva) { a.target = '_blank'; a.rel = 'noopener'; }
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
+    // Si la página no pierde el foco, la compu no tiene app de mail: se ofrece Gmail o copiar
+    var espera = null;
+    var salir = null;
+    function mirarMail() {
+      var salio = false;
+      if (salir) {
+        window.removeEventListener('blur', salir);
+        document.removeEventListener('visibilitychange', salir);
+      }
+      salir = function () { salio = true; };
+      window.addEventListener('blur', salir);
+      document.addEventListener('visibilitychange', salir);
+      say('Abriendo tu app de mail…');
+      clearTimeout(espera);
+      espera = setTimeout(function () {
+        window.removeEventListener('blur', salir);
+        document.removeEventListener('visibilitychange', salir);
+        salir = null;
+        if (salio) say('Listo: la consulta quedó armada en tu app de mail. Solo falta enviarla.');
+        else say('No se abrió ninguna app de mail. Abrí la consulta en Gmail o copiala.', true);
+      }, 1600);
+    }
+
+    function enviar(via) {
+      var bad = check();
+      if (bad.length) {
+        var first = fields[bad[0]];
+        first.box.scrollIntoView({ behavior: reduce, block: 'center' });
+        first.input.focus({ preventScroll: true });
+        say('Falta completar: ' + lista(bad) + '.', true);
+        return;
+      }
+      var c = compose(via === 'whatsapp');
+      var enc = encodeURIComponent;
+      if (via === 'mail') {
+        abrir('mailto:' + MAIL + '?subject=' + enc(c.asunto) + '&body=' + enc(c.texto.replace(/\n/g, '\r\n')));
+        mirarMail();
+      } else if (via === 'gmail') {
+        abrir('https://mail.google.com/mail/?view=cm&fs=1&to=' + enc(MAIL) + '&su=' + enc(c.asunto) + '&body=' + enc(c.texto), true);
+        say('Se abrió Gmail en otra pestaña con la consulta armada. Solo falta enviarla.');
+      } else if (via === 'whatsapp') {
+        abrir('https://wa.me/' + WHATSAPP + '?text=' + enc(c.texto), true);
+        say('Se abrió WhatsApp con la consulta armada. Solo falta enviarla.');
+      } else if (via === 'copiar') {
+        copyText(c.texto).then(function () {
+          say('Consulta copiada. Pegala en un mail a ' + MAIL + '.');
+        }, function () {
+          say('No se pudo copiar. Escribí a ' + MAIL + '.', true);
+        });
+      }
+    }
+
+    // borrador en esta pestaña: si el celular recarga la página al volver del mail, no se pierde
+    function guardar() {
+      try {
+        var data = {};
+        Array.prototype.forEach.call(ask.elements, function (el) {
+          if (!el.name) return;
+          if (el.type === 'radio') { if (el.checked) data[el.name] = el.value; } else data[el.name] = el.value;
+        });
+        sessionStorage.setItem(BORRADOR, JSON.stringify(data));
+      } catch (e) { /* sin almacenamiento no pasa nada */ }
+    }
+    function recuperar() {
+      try {
+        var data = JSON.parse(sessionStorage.getItem(BORRADOR) || 'null');
+        if (!data) return;
+        Array.prototype.forEach.call(ask.elements, function (el) {
+          if (!el.name || !(el.name in data)) return;
+          if (el.type === 'radio') el.checked = el.value === data[el.name];
+          else el.value = data[el.name];
+        });
+      } catch (e) { /* idem */ }
+    }
+
+    recuperar();
+    applyMotivo();
+    showDate();
+
+    ask.addEventListener('change', function (e) {
+      if (e.target.name === 'motivo') applyMotivo();
+      if (e.target === date) showDate();
+      guardar();
+    });
+    ask.addEventListener('input', function (e) {
+      var box = e.target.closest('[data-field]');
+      if (box && box.classList.contains('is-error') && !problema(box.dataset.field)) {
+        clearError(box.dataset.field);
+        // con todo corregido, el aviso de lo que faltaba se va
+        if (!ask.querySelector('.field.is-error') && status.classList.contains('is-alerta')) say('');
+      }
+      if (e.target === date) showDate();
+      guardar();
+    });
+    ask.addEventListener('submit', function (e) {
+      e.preventDefault();
+      enviar('mail');
+    });
+    Array.prototype.forEach.call(ask.querySelectorAll('[data-via]'), function (btn) {
+      btn.addEventListener('click', function () { enviar(btn.dataset.via); });
+    });
+  })();
 
   /* ----------------------------------------------------------
      Visor de fotos: las dos grandes y la grilla, en orden.
