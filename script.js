@@ -81,7 +81,7 @@
   }
 
   /* ----------------------------------------------------------
-     La sección en pantalla queda marcada en el menú con la gota
+     La sección en pantalla queda marcada en el menú con el led
      ---------------------------------------------------------- */
   var navLinks = Array.prototype.slice.call(document.querySelectorAll('.bar__nav a, .bar__cta, .menu__nav a'));
   var sections = ['sets', 'bio', 'fotos', 'rider', 'booking']
@@ -136,7 +136,7 @@
   var player = document.getElementById('player');
   var poster = document.getElementById('playerPoster');
   var thumb = document.getElementById('playerThumb');
-  var nowGota = document.getElementById('nowGota');
+  var nowLed = document.getElementById('nowLed');
   var nowName = document.getElementById('nowName');
   var nowBpm = document.getElementById('nowBpm');
   var tracks = Array.prototype.slice.call(document.querySelectorAll('.track'));
@@ -181,10 +181,10 @@
     if (thumb) thumb.src = 'https://i.ytimg.com/vi/' + btn.dataset.id + '/maxresdefault.jpg';
     if (poster) poster.setAttribute('aria-label', 'Reproducir el set de ' + info.name);
 
-    // la gota late a los BPM de este set
+    // el led titila a los BPM de este set
     if (info.bpm) {
       sets.style.setProperty('--bpm', String(info.bpm));
-      beat(nowGota);
+      beat(nowLed);
     }
   }
 
