@@ -27,6 +27,14 @@ Es una sola página estática: sin panel, sin funciones serverless y sin paso de
 - **Sangría óptica.** El nombre del inicio y del pie está justificado por la tinta, no por la caja: arranca y termina a filo del texto y de la línea. Los títulos se corren lo que mide la sangría de su primera letra (la S menos que la B, la F o la R).
 - **Leds.** En el formulario, las teclas de tipo de evento tienen su led apagado y se enciende el elegido; un campo que falta se marca con borde rojo y el led al lado del aviso.
 - **Enlaces que salen del sitio** llevan una flecha chica.
+- **Fotos que se revelan.** Mientras carga, cada foto muestra su tono; después aparece con un fundido, como una copia en la cubeta. En el visor, cada foto entra con un fundido corto.
+- **Teclas.** Botones y opciones se hunden un pixel al tocarlos; en el celular no aparece el recuadro gris del toque.
+- **Menú del celular.** Aparece con un fundido y las secciones suben apenas, una tras otra.
+- **Video.** Al darle play, la miniatura queda debajo mientras carga YouTube, sin pantallazo negro.
+- **Formulario.** El cursor titila en rojo como el led, el calendario de la fecha usa el rojo de la marca, el autocompletado no pinta los campos de celeste y el mensaje crece con lo que se escribe.
+- **Tipografía.** Bajadas y avisos en líneas parejas, párrafos sin una palabra sola al final, y sin cortes en el teléfono, los modelos de equipos ni “Buenos Aires”. Archivo no trae el guion que no corta (U+2011): para que una palabra con guion no se parta se usa `sin-corte`, no ese carácter.
+- **Más contraste** para quien lo pide en su sistema (grises más claros y sin grano), y barras de desplazamiento al tono del sitio.
+- **Movimiento.** Con “reducir movimiento” activado no hay fundidos ni titileo.
 
 ## Estructura
 
@@ -46,7 +54,7 @@ sitemap.xml
 
 - **Textos:** directamente en `index.html`.
 - **Sets:** cada fila de la lista (`.track`) lleva el ID del video de YouTube en `data-id` y los BPM en `data-bpm` (el número que usa el latido). La primera es la que aparece cargada en el reproductor; si cambia, cambiar también la miniatura, `#nowName` y `#nowBpm`.
-- **Fotos:** cada foto tiene una miniatura `img/fotos/NN-720.webp`, una versión grande `NN-1800.webp` (la que abre el visor) y `NN.jpg` (la que se descarga). WebP debajo de ~300 KB. Las dos de arriba de la grilla usan `img/hero-2.webp` y `img/hero-3.webp`. El lugar de cada foto en la grilla sale de su clase (`g-01`, `g-02`…) en `style.css`, y su `sizes` en `index.html` acompaña ese ancho.
+- **Fotos:** cada foto tiene una miniatura `img/fotos/NN-720.webp`, una versión grande `NN-1800.webp` (la que abre el visor) y `NN.jpg` (la que se descarga). WebP debajo de ~300 KB. Las dos de arriba de la grilla usan `img/hero-2.webp` y `img/hero-3.webp`. El lugar de cada foto en la grilla sale de su clase (`g-01`, `g-02`…) en `style.css`, y su `sizes` en `index.html` acompaña ese ancho. Cada botón de foto lleva `data-tono`, el color promedio de la foto, que se ve mientras carga: si se reemplaza una foto, actualizarlo (con cualquier editor, el color medio de la imagen achicada a 1 px).
 - **Bio:** las dos fotos son `img/bio-a.webp` (de pie) y `img/bio-b.webp` (recostada, recortada a 5:4). Abren el visor y se descargan completas (`fotos/13` y `fotos/14`).
 - **Booking:** el mail y el WhatsApp están en `index.html` (contacto directo y menú del celular) y en `script.js` (`MAIL` y `WHATSAPP`, al principio de la consulta). Si cambian, van en los dos. Los textos que arma la consulta (saludo, asunto, qué datos pide cada motivo) están en `MOTIVOS`, en `script.js`.
 - **Rider:** la cabina es `img/rider-cabina.webp`, sacada del diagrama del presskit de Kexxy y adaptada a su setup: CDJ, mixer, CDJ y CDJ, sin texto en la imagen. Los modelos van escritos en la lista de al lado.

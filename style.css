@@ -55,6 +55,9 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: var(--bar);
   -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent; /* sin el recuadro gris al tocar: cada tecla tiene su :active */
+  scrollbar-color: rgba(241, 235, 230, 0.28) var(--sala);
+  accent-color: var(--sangre); /* el calendario de la fecha, con el rojo de la marca */
 }
 
 body {
@@ -109,6 +112,20 @@ button { font-family: inherit; }
   white-space: nowrap;
   border: 0;
 }
+
+/* lo que no se parte entre líneas: teléfono, modelos de equipos */
+.sin-corte { white-space: nowrap; }
+
+/* Sin palabras sueltas: bajadas y avisos en líneas parejas, párrafos sin
+   una palabra sola en la última línea */
+.hero__lead span,
+.ask__lead,
+.head__note,
+.field__hint,
+.lost .titulo,
+.lost__text { text-wrap: balance; }
+.bio__body p,
+.track__name small { text-wrap: pretty; }
 
 /* El rasgo de la marca: Archivo extra condensada, en mayúsculas */
 .hero__name,
@@ -220,6 +237,11 @@ button { font-family: inherit; }
   color: var(--estudio);
 }
 .btn.is-done { pointer-events: none; }
+/* al tocar, la tecla se hunde un pixel */
+.btn:active,
+.ask__link:active,
+.seg label:active span,
+.chips label:active span { transform: translateY(1px); }
 
 .link {
   display: inline-flex;
@@ -355,6 +377,17 @@ button { font-family: inherit; }
   overflow-y: auto;
 }
 .menu[hidden] { display: none; }
+/* el menú aparece con un fundido y las secciones suben apenas, una tras otra */
+@keyframes aparecer { from { opacity: 0; } }
+@keyframes subir { from { opacity: 0; transform: translateY(14px); } }
+.menu:not([hidden]) { animation: aparecer 0.25s ease; }
+.menu:not([hidden]) .menu__nav a,
+.menu:not([hidden]) .menu__mail { animation: subir 0.5s var(--ataque) backwards; }
+.menu__nav a:nth-child(2) { animation-delay: 0.03s; }
+.menu__nav a:nth-child(3) { animation-delay: 0.06s; }
+.menu__nav a:nth-child(4) { animation-delay: 0.09s; }
+.menu__nav a:nth-child(5) { animation-delay: 0.12s; }
+.menu__mail { animation-delay: 0.16s; }
 .menu__nav {
   display: flex;
   flex-direction: column;
@@ -583,6 +616,15 @@ button { font-family: inherit; }
   height: 100%;
   border: 0;
 }
+/* la miniatura queda debajo mientras carga YouTube: sin pantallazo negro */
+.player__under {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.82);
+}
 
 .now {
   display: flex;
@@ -635,6 +677,7 @@ button { font-family: inherit; }
   transition: opacity 0.2s ease, transform 0.3s var(--ataque);
 }
 .track:hover,
+.track:active,
 .track[aria-current='true'] { color: var(--hueso); }
 .track:hover::before {
   opacity: 0.35;
@@ -705,7 +748,7 @@ button { font-family: inherit; }
 .bio__data { grid-area: data; }
 
 .bio__photo { margin: 0; }
-.bio__photo .ph { background: transparent; }
+.bio__photo .ph { background: var(--tono, transparent); }
 .bio__photo img { width: 100%; height: auto; }
 
 .bio__intro .titulo { margin-bottom: clamp(24px, 3vw, 40px); }
@@ -762,20 +805,23 @@ button { font-family: inherit; }
 /* ----------------------------------------------------------
    Fotos
    ---------------------------------------------------------- */
+/* Fotos que se revelan: mientras cargan se ve su tono (data-tono) y
+   aparecen con un fundido, como una copia en la cubeta */
 .ph {
   display: block;
   width: 100%;
   padding: 0;
   border: 0;
-  background: #0a0a0a;
+  background: var(--tono, #0a0a0a);
   cursor: zoom-in;
   overflow: hidden;
 }
 .ph img {
   width: 100%;
   height: auto;
-  transition: transform 1s var(--ataque), filter 0.4s ease;
+  transition: transform 1s var(--ataque), filter 0.4s ease, opacity 0.8s ease;
 }
+.ph img.is-revelando { opacity: 0; }
 .ph:hover img {
   transform: scale(1.025);
   filter: brightness(1.06);
@@ -825,11 +871,6 @@ button { font-family: inherit; }
 
 .spec { border-top: 1px solid var(--linea); }
 .spec div { border-color: var(--linea); }
-.spec dd span {
-  display: block;
-  color: var(--humo);
-  font-size: 15px;
-}
 
 /* ----------------------------------------------------------
    Booking
@@ -957,10 +998,24 @@ button { font-family: inherit; }
   background: rgba(241, 235, 230, 0.035);
   color: var(--hueso);
   font: 400 17px/1.4 var(--font); /* 17 px: el iPhone no hace zoom al tocar */
+  caret-color: var(--sangre); /* el cursor titila en rojo, como el led */
   -webkit-appearance: none;
   appearance: none;
   transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
+/* autocompletado del navegador: sin el fondo celeste o amarillo sobre el negro */
+.campo:-webkit-autofill,
+.campo:-webkit-autofill:hover {
+  -webkit-text-fill-color: var(--hueso);
+  -webkit-box-shadow: inset 0 0 0 1000px #131211;
+  box-shadow: inset 0 0 0 1000px #131211;
+  transition: background-color 9999s ease 0s;
+}
+.campo:-webkit-autofill:focus {
+  -webkit-box-shadow: inset 0 0 0 1px var(--hueso), inset 0 0 0 1000px #161514;
+  box-shadow: inset 0 0 0 1px var(--hueso), inset 0 0 0 1000px #161514;
+}
+.campo:autofill { filter: none; }
 .campo:hover { border-color: rgba(241, 235, 230, 0.62); }
 .campo:focus {
   outline: none;
@@ -972,6 +1027,14 @@ textarea.campo {
   min-height: 150px;
   line-height: 1.5;
   resize: vertical;
+}
+/* el mensaje crece con lo que se escribe */
+@supports (field-sizing: content) {
+  textarea.campo {
+    field-sizing: content;
+    max-height: 60vh;
+    resize: none;
+  }
 }
 /* la fecha: a la izquierda en el iPhone, apagada mientras está vacía */
 .campo--fecha::-webkit-date-and-time-value { text-align: left; }
@@ -1211,13 +1274,16 @@ textarea.campo {
 .viewer[open] {
   display: grid;
   grid-template-rows: minmax(0, 1fr) auto;
+  animation: aparecer 0.2s ease;
 }
 .viewer__img {
   width: 100%;
   height: 100%;
   object-fit: contain;
   padding: clamp(12px, 3vw, 40px) clamp(12px, 3vw, 40px) 0;
+  transition: opacity 0.25s ease;
 }
+.viewer__img.is-revelando { opacity: 0; }
 .viewer__bar {
   display: flex;
   align-items: center;
@@ -1381,6 +1447,25 @@ textarea.campo {
   .bar__mark { font-size: 17px; }
   .bar__right { gap: 14px; }
   .bar__cta { padding: 0 12px; }
+  /* rótulo arriba y dato abajo: “Reproductores” no entra al lado */
+  .facts div,
+  .signed div,
+  .spec div {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
+
+/* Más contraste, para quien lo pide en su sistema: grises más claros y sin grano */
+@media (prefers-contrast: more) {
+  :root {
+    --humo: rgba(241, 235, 230, 0.86);
+    --linea: rgba(241, 235, 230, 0.4);
+    --campo-linea: rgba(241, 235, 230, 0.75);
+    --tinta-2: rgba(0, 0, 0, 0.86);
+    --tinta-linea: rgba(0, 0, 0, 0.45);
+  }
+  body::after { display: none; }
 }
 
 /* ----------------------------------------------------------

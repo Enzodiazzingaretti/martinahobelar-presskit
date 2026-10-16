@@ -7,6 +7,9 @@
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var announcer = document.getElementById('announcer');
 
+  // En el iPhone, :active (la tecla que se hunde) solo se ve si hay un toque escuchado
+  document.addEventListener('touchstart', function () {}, { passive: true });
+
   function announce(text) {
     if (!announcer) return;
     announcer.textContent = '';
@@ -152,12 +155,17 @@
       if (old) old.replaceWith(frame);
       else player.insertBefore(frame, player.firstChild);
     }
+    // la miniatura queda debajo hasta que YouTube dibuja el video
+    var under = document.createElement('img');
+    under.className = 'player__under';
+    under.alt = '';
+    under.src = 'https://i.ytimg.com/vi/' + encodeURIComponent(btn.dataset.id) + '/maxresdefault.jpg';
     var iframe = document.createElement('iframe');
     iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(btn.dataset.id) +
       '?autoplay=1&rel=0&playsinline=1';
     iframe.title = 'Set de Martina Høbelar en ' + info.name;
     iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
-    frame.replaceChildren(iframe);
+    frame.replaceChildren(under, iframe);
   }
 
   function choose(btn) {
@@ -229,6 +237,7 @@
           return p.textContent.trim();
         }).join('\n\n');
       }
+      text = text.replace(/ /g, ' '); // los espacios duros de la página, como espacios comunes
       copyText(text).then(function () {
         btn.textContent = btn.dataset.done || 'Copiado';
         btn.classList.add('is-done');
@@ -539,6 +548,18 @@
   })();
 
   /* ----------------------------------------------------------
+     Fotos que se revelan: mientras cargan se ve su tono y después
+     aparecen con un fundido. Las que ya estaban cargadas, sin fundido.
+     ---------------------------------------------------------- */
+  Array.prototype.forEach.call(document.querySelectorAll('.ph'), function (ph) {
+    if (ph.dataset.tono) ph.style.setProperty('--tono', ph.dataset.tono);
+    var img = ph.querySelector('img');
+    if (!img || (img.complete && img.naturalWidth)) return;
+    img.classList.add('is-revelando');
+    img.addEventListener('load', function () { img.classList.remove('is-revelando'); }, { once: true });
+  });
+
+  /* ----------------------------------------------------------
      Visor de fotos: las dos grandes y la grilla, en orden.
      Se ve en WebP y se descarga en JPG.
      ---------------------------------------------------------- */
@@ -553,6 +574,11 @@
     index = (i + photos.length) % photos.length;
     var btn = photos[index];
     var img = btn.querySelector('img');
+    // cada foto entra con un fundido corto cuando terminó de cargar
+    if (vImg.getAttribute('src') !== btn.dataset.full) {
+      vImg.classList.add('is-revelando');
+      vImg.onload = function () { vImg.classList.remove('is-revelando'); };
+    }
     vImg.src = btn.dataset.full;
     vImg.alt = img.alt;
     vCount.textContent = (index + 1) + ' / ' + photos.length;
