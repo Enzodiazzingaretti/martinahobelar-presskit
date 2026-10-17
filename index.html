@@ -36,7 +36,7 @@
   <link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" as="image" imagesrcset="img/hero-1.webp 1920w, img/hero-1-2880.webp 2880w" imagesizes="100vw" media="(min-width: 700px)" fetchpriority="high" />
   <link rel="preload" as="image" href="img/hero-1-m.webp" media="(max-width: 699px)" fetchpriority="high" />
-  <link rel="stylesheet" href="style.css?v=9" />
+  <link rel="stylesheet" href="style.css?v=10" />
 
   <script type="application/ld+json">
   {
@@ -284,8 +284,8 @@
       </div>
     </section>
 
-    <!-- BOOKING: la consulta se arma acá y sale desde el mail o el WhatsApp
-         de quien escribe. No pasa por ningún servidor. Al lado, el contacto directo. -->
+    <!-- BOOKING: el formulario arma la consulta y la abre en el mail de quien
+         escribe. No pasa por ningún servidor. Al lado, el contacto directo. -->
     <section class="section booking" id="booking" aria-labelledby="booking-title">
       <div class="wrap">
         <header class="head">
@@ -295,8 +295,6 @@
 
         <div class="booking__grid">
           <form class="ask" id="ask" novalidate aria-label="Consulta de booking">
-            <p class="ask__lead">Contanos qué necesitás y la consulta queda lista para mandar desde tu mail o tu WhatsApp.</p>
-
             <div class="ask__grid">
               <div class="field" data-field="nombre">
                 <label class="field__top" for="f-nombre"><span class="etiqueta">Nombre</span></label>
@@ -318,19 +316,17 @@
 
             <div class="ask__actions">
               <button class="btn btn--solid" type="submit">Enviar por mail</button>
-              <button class="btn btn--line" type="button" data-via="whatsapp">Enviar por WhatsApp</button>
             </div>
             <p class="ask__status" id="askStatus" role="status" aria-live="polite"></p>
           </form>
 
+          <!-- Contacto directo: una sola lista. El Instagram de Martina está en el pie -->
           <div class="direct">
             <h3 class="etiqueta" id="direct-title">Contacto directo</h3>
-            <a class="direct__mail" href="mailto:booking.grooveselections@gmail.com?subject=Booking%20Martina%20H%C3%B8belar">booking.grooveselections<wbr />@gmail.com</a>
-            <button class="btn btn--line btn--sm copy" type="button" data-copy="booking.grooveselections@gmail.com" data-done="Mail copiado">Copiar mail</button>
-            <ul class="ways">
-              <li><a class="ext" href="https://wa.me/5491169229895?text=Hola%2C%20te%20escribo%20por%20una%20fecha%20para%20Martina%20H%C3%B8belar." target="_blank" rel="noopener"><span class="etiqueta">WhatsApp</span><span class="ways__value sin-corte">+54 9 11 6922 9895</span></a></li>
-              <li><a class="ext" href="https://www.instagram.com/martuhobelar" target="_blank" rel="noopener"><span class="etiqueta">Instagram</span><span class="ways__value">@martuhobelar</span></a></li>
-              <li><a class="ext" href="https://www.instagram.com/grooveselectionsbookings" target="_blank" rel="noopener"><span class="etiqueta">Instagram de bookings</span><span class="ways__value">@grooveselectionsbookings</span></a></li>
+            <ul class="ways" aria-labelledby="direct-title">
+              <li><a class="ext" href="mailto:booking.grooveselections@gmail.com?subject=Booking%20%C2%B7%20Martina%20H%C3%B8belar"><span class="etiqueta">Mail</span><span class="ways__value">booking.grooveselections<wbr />@gmail.com</span></a></li>
+              <li><a class="ext" href="https://wa.me/5491169229895?text=Hola%2C%20te%20escribo%20por%20Martina%20H%C3%B8belar." target="_blank" rel="noopener"><span class="etiqueta">WhatsApp</span><span class="ways__value sin-corte">+54 9 11 6922 9895</span></a></li>
+              <li><a class="ext" href="https://www.instagram.com/grooveselectionsbookings" target="_blank" rel="noopener"><span class="etiqueta">Instagram</span><span class="ways__value">@grooveselectionsbookings</span></a></li>
             </ul>
           </div>
         </div>
@@ -374,6 +370,6 @@
     </div>
   </dialog>
 
-  <script src="script.js?v=9" defer></script>
+  <script src="script.js?v=10" defer></script>
 </body>
 </html>

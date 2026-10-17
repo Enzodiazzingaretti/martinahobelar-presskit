@@ -202,8 +202,7 @@
   }
 
   /* ----------------------------------------------------------
-     Copiar: el mail (muchos no tienen app de correo configurada
-     en la compu) y la bio, para quien arma la difusión
+     Copiar la bio, completa o corta, para quien arma la difusión
      ---------------------------------------------------------- */
   function copyText(text) {
     if (navigator.clipboard && window.isSecureContext) {
@@ -256,17 +255,15 @@
   });
 
   /* ----------------------------------------------------------
-     Consulta de booking: se arma acá y
-     se abre lista para enviar en el mail o el WhatsApp de
-     quien escribe, así la respuesta le llega a su casilla. No
-     pasa por ningún servidor; el borrador queda solo en esta
-     pestaña por si el celular recarga la página.
+     Consulta de booking: el formulario arma el mail y lo abre en
+     la app de quien escribe, así la respuesta le llega a su
+     casilla. No pasa por ningún servidor; el borrador queda solo
+     en esta pestaña por si el celular recarga la página.
      ---------------------------------------------------------- */
   var ask = document.getElementById('ask');
 
   if (ask) (function () {
     var MAIL = 'booking.grooveselections@gmail.com';
-    var WHATSAPP = '5491169229895';
     var BORRADOR = 'mh-consulta';
     var FALTA = { nombre: 'Escribí tu nombre.', mensaje: 'Contanos qué necesitás.' };
 
@@ -305,24 +302,18 @@
       });
     }
 
-    function compose(negrita) {
-      function linea(label, v) { return (negrita ? '*' + label + ':* ' : label + ': ') + v; }
-      var lines = ['Hola, te escribo por Martina Høbelar.', '', linea('Nombre', val('nombre'))];
-      if (val('evento')) lines.push(linea('Fecha y lugar', val('evento')));
+    // el asunto lleva la fecha y el lugar si los hay: así se ordena la casilla de booking
+    function compose() {
+      var lines = ['Hola, te escribo por Martina Høbelar.', '', 'Nombre: ' + val('nombre')];
+      if (val('evento')) lines.push('Fecha y lugar: ' + val('evento'));
       lines.push('', val('mensaje'));
-      return { asunto: 'Booking · Martina Høbelar · ' + val('nombre'), texto: lines.join('\n') };
+      return {
+        asunto: ['Booking', 'Martina Høbelar', val('evento')].filter(Boolean).join(' · '),
+        texto: lines.join('\n').replace(/\r?\n/g, '\r\n') // saltos de mail, también los del mensaje
+      };
     }
 
-    function abrir(url, nueva) {
-      var a = document.createElement('a');
-      a.href = url;
-      if (nueva) { a.target = '_blank'; a.rel = 'noopener'; }
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-    }
-
-    // Si la página no pierde el foco, no hay app de mail: se avisa y se ofrece la dirección
+    // Si la página no pierde el foco, no hay app de mail: se avisa adónde escribir
     var espera = null;
     var salir = null;
     function mirarMail() {
@@ -341,11 +332,11 @@
         document.removeEventListener('visibilitychange', salir);
         salir = null;
         if (salio) say('Listo: la consulta quedó armada en tu app de mail. Solo falta enviarla.');
-        else say('No se abrió ninguna app de mail. Escribinos a ' + MAIL + ' o por WhatsApp.', true);
+        else say('No se abrió ninguna app de mail. Escribí a ' + MAIL + ' o por WhatsApp.', true);
       }, 1600);
     }
 
-    function enviar(via) {
+    function enviar() {
       var bad = check();
       if (bad.length) {
         var first = fields[bad[0]];
@@ -354,15 +345,13 @@
         say(bad.length > 1 ? 'Falta completar el nombre y el mensaje.' : bad[0] === 'nombre' ? 'Falta completar el nombre.' : 'Falta completar el mensaje.', true);
         return;
       }
-      var c = compose(via === 'whatsapp');
-      var enc = encodeURIComponent;
-      if (via === 'whatsapp') {
-        abrir('https://wa.me/' + WHATSAPP + '?text=' + enc(c.texto), true);
-        say('Se abrió WhatsApp con la consulta armada. Solo falta enviarla.');
-      } else {
-        abrir('mailto:' + MAIL + '?subject=' + enc(c.asunto) + '&body=' + enc(c.texto.replace(/\n/g, '\r\n')));
-        mirarMail();
-      }
+      var c = compose();
+      var a = document.createElement('a');
+      a.href = 'mailto:' + MAIL + '?subject=' + encodeURIComponent(c.asunto) + '&body=' + encodeURIComponent(c.texto);
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      mirarMail();
     }
 
     // borrador en esta pestaña: si el celular recarga la página al volver del mail, no se pierde
@@ -375,7 +364,7 @@
     }
     try {
       var data = JSON.parse(sessionStorage.getItem(BORRADOR) || 'null');
-      if (data) Array.prototype.forEach.call(ask.elements, function (el) { if (el.name in data) el.value = data[el.name]; });
+      if (data) Array.prototype.forEach.call(ask.elements, function (el) { if (el.name && el.name in data) el.value = data[el.name]; });
     } catch (e) { /* idem */ }
 
     ask.addEventListener('input', function (e) {
@@ -388,9 +377,8 @@
     });
     ask.addEventListener('submit', function (e) {
       e.preventDefault();
-      enviar('mail');
+      enviar();
     });
-    ask.querySelector('[data-via="whatsapp"]').addEventListener('click', function () { enviar('whatsapp'); });
   })();
 
   /* ----------------------------------------------------------
