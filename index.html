@@ -36,7 +36,7 @@
   <link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" as="image" imagesrcset="img/hero-1.webp 1920w, img/hero-1-2880.webp 2880w" imagesizes="100vw" media="(min-width: 700px)" fetchpriority="high" />
   <link rel="preload" as="image" href="img/hero-1-m.webp" media="(max-width: 699px)" fetchpriority="high" />
-  <link rel="stylesheet" href="style.css?v=8" />
+  <link rel="stylesheet" href="style.css?v=9" />
 
   <script type="application/ld+json">
   {
@@ -284,7 +284,7 @@
       </div>
     </section>
 
-    <!-- BOOKING: la consulta se arma acá y sale desde el mail, Gmail o WhatsApp
+    <!-- BOOKING: la consulta se arma acá y sale desde el mail o el WhatsApp
          de quien escribe. No pasa por ningún servidor. Al lado, el contacto directo. -->
     <section class="section booking" id="booking" aria-labelledby="booking-title">
       <div class="wrap">
@@ -295,70 +295,23 @@
 
         <div class="booking__grid">
           <form class="ask" id="ask" novalidate aria-label="Consulta de booking">
-            <p class="ask__lead">Completá los datos y la consulta queda lista para mandar desde tu mail o tu WhatsApp.</p>
-
-            <fieldset class="ask__set">
-              <legend class="ask__legend"><span class="etiqueta">Consulta por</span></legend>
-              <div class="seg">
-                <label><input type="radio" name="motivo" value="fecha" checked /><span>Fecha</span></label>
-                <label><input type="radio" name="motivo" value="prensa" /><span>Prensa</span></label>
-                <label><input type="radio" name="motivo" value="colab" /><span>Colaboración</span></label>
-              </div>
-            </fieldset>
+            <p class="ask__lead">Contanos qué necesitás y la consulta queda lista para mandar desde tu mail o tu WhatsApp.</p>
 
             <div class="ask__grid">
               <div class="field" data-field="nombre">
-                <label class="field__top" for="f-nombre"><span class="etiqueta">Nombre</span><span class="field__opc" hidden>Opcional</span></label>
+                <label class="field__top" for="f-nombre"><span class="etiqueta">Nombre</span></label>
                 <input class="campo" id="f-nombre" name="nombre" type="text" autocomplete="name" maxlength="80" required aria-describedby="e-nombre" />
                 <p class="field__error" id="e-nombre" hidden><span class="led" aria-hidden="true"></span><span></span></p>
               </div>
 
-              <div class="field" data-field="org">
-                <label class="field__top" for="f-org"><span class="etiqueta" id="l-org">Productora o fiesta</span><span class="field__opc">Opcional</span></label>
-                <input class="campo" id="f-org" name="org" type="text" autocomplete="organization" maxlength="80" aria-describedby="e-org" />
-                <p class="field__error" id="e-org" hidden><span class="led" aria-hidden="true"></span><span></span></p>
-              </div>
-
-              <div class="ask__evento" id="askEvento">
-                <div class="field" data-field="fecha">
-                  <label class="field__top" for="f-fecha"><span class="etiqueta">Fecha</span><span class="field__opc" hidden>Opcional</span></label>
-                  <input class="campo campo--fecha" id="f-fecha" name="fecha" type="date" required aria-describedby="h-fecha e-fecha" />
-                  <p class="field__hint" id="h-fecha">Si todavía no está confirmada, la tentativa.</p>
-                  <p class="field__error" id="e-fecha" hidden><span class="led" aria-hidden="true"></span><span></span></p>
-                </div>
-
-                <div class="field" data-field="ciudad">
-                  <label class="field__top" for="f-ciudad"><span class="etiqueta">Ciudad y país</span><span class="field__opc" hidden>Opcional</span></label>
-                  <input class="campo" id="f-ciudad" name="ciudad" type="text" autocomplete="off" maxlength="80" required aria-describedby="e-ciudad" />
-                  <p class="field__error" id="e-ciudad" hidden><span class="led" aria-hidden="true"></span><span></span></p>
-                </div>
-
-                <div class="field" data-field="venue">
-                  <label class="field__top" for="f-venue"><span class="etiqueta">Club o venue</span><span class="field__opc">Opcional</span></label>
-                  <input class="campo" id="f-venue" name="venue" type="text" autocomplete="off" maxlength="80" />
-                </div>
-
-                <div class="field" data-field="capacidad">
-                  <label class="field__top" for="f-capacidad"><span class="etiqueta">Capacidad</span><span class="field__opc">Opcional</span></label>
-                  <input class="campo" id="f-capacidad" name="capacidad" type="text" inputmode="numeric" autocomplete="off" maxlength="12" />
-                </div>
-
-                <fieldset class="ask__set field--full">
-                  <legend class="ask__legend"><span class="field__top"><span class="etiqueta">Tipo de evento</span><span class="field__opc">Opcional</span></span></legend>
-                  <div class="chips">
-                    <label><input type="radio" name="tipo" value="Club" /><span>Club</span></label>
-                    <label><input type="radio" name="tipo" value="Festival" /><span>Festival</span></label>
-                    <label><input type="radio" name="tipo" value="Streaming" /><span>Streaming</span></label>
-                    <label><input type="radio" name="tipo" value="Evento privado" /><span>Privado</span></label>
-                    <label><input type="radio" name="tipo" value="Otro" /><span>Otro</span></label>
-                  </div>
-                </fieldset>
+              <div class="field" data-field="evento">
+                <label class="field__top" for="f-evento"><span class="etiqueta">Fecha y lugar</span><span class="field__opc">Opcional</span></label>
+                <input class="campo" id="f-evento" name="evento" type="text" autocomplete="off" maxlength="120" placeholder="Ej.: 12 de diciembre, Córdoba" />
               </div>
 
               <div class="field field--full" data-field="mensaje">
-                <label class="field__top" for="f-mensaje"><span class="etiqueta">Mensaje</span><span class="field__opc">Opcional</span></label>
-                <textarea class="campo" id="f-mensaje" name="mensaje" rows="5" maxlength="1000" aria-describedby="h-mensaje e-mensaje"></textarea>
-                <p class="field__hint" id="h-mensaje">Line-up, horario del set, propuesta o lo que quieras sumar.</p>
+                <label class="field__top" for="f-mensaje"><span class="etiqueta">Mensaje</span></label>
+                <textarea class="campo" id="f-mensaje" name="mensaje" rows="5" maxlength="1000" required aria-describedby="e-mensaje"></textarea>
                 <p class="field__error" id="e-mensaje" hidden><span class="led" aria-hidden="true"></span><span></span></p>
               </div>
             </div>
@@ -367,11 +320,6 @@
               <button class="btn btn--solid" type="submit">Enviar por mail</button>
               <button class="btn btn--line" type="button" data-via="whatsapp">Enviar por WhatsApp</button>
             </div>
-            <p class="ask__alt">
-              <span>¿No se abre tu app de mail?</span>
-              <button class="ask__link" type="button" data-via="gmail">Abrir en Gmail</button>
-              <button class="ask__link" type="button" data-via="copiar">Copiar la consulta</button>
-            </p>
             <p class="ask__status" id="askStatus" role="status" aria-live="polite"></p>
           </form>
 
@@ -426,6 +374,6 @@
     </div>
   </dialog>
 
-  <script src="script.js?v=8" defer></script>
+  <script src="script.js?v=9" defer></script>
 </body>
 </html>

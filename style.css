@@ -121,7 +121,6 @@ button { font-family: inherit; }
 .hero__lead span,
 .ask__lead,
 .head__note,
-.field__hint,
 .lost .titulo,
 .lost__text { text-wrap: balance; }
 .bio__body p,
@@ -238,10 +237,7 @@ button { font-family: inherit; }
 }
 .btn.is-done { pointer-events: none; }
 /* al tocar, la tecla se hunde un pixel */
-.btn:active,
-.ask__link:active,
-.seg label:active span,
-.chips label:active span { transform: translateY(1px); }
+.btn:active { transform: translateY(1px); }
 
 .link {
   display: inline-flex;
@@ -895,77 +891,11 @@ button { font-family: inherit; }
   line-height: 1.45;
 }
 
-.ask__set {
-  min-width: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-/* la leyenda fuera de su lugar especial, para poder alinearla como las etiquetas */
-.ask__legend {
-  float: left;
-  width: 100%;
-  margin: 0 0 10px;
-  padding: 0;
-}
-.ask__legend + * { clear: both; }
-
-/* qué se consulta: tres teclas, la elegida encendida */
-.seg {
-  display: grid;
-  /* iguales mientras entren; en un celular angosto “Colaboración” toma lo que necesita */
-  grid-template-columns: repeat(3, minmax(max-content, 1fr));
-  border: 1px solid var(--campo-linea);
-}
-.seg label,
-.chips label {
-  position: relative;
-  display: block;
-}
-.seg label + label { border-left: 1px solid var(--campo-linea); }
-/* el radio cubre la tecla entera: se toca, se enfoca y se lee como un radio */
-.seg input,
-.chips input {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-.seg span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-  padding: 0 8px;
-  color: var(--humo);
-  font-size: 15px;
-  font-weight: 600;
-  text-align: center;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-.seg label:hover span { color: var(--hueso); }
-.seg input:checked + span {
-  background: var(--hueso);
-  color: var(--tinta);
-}
-.seg input:focus-visible + span,
-.chips input:focus-visible + span {
-  outline: 2px solid var(--hueso);
-  outline-offset: 3px;
-}
-
-.ask__grid,
-.ask__evento {
+.ask__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 28px 24px;
 }
-.ask__grid { margin-top: 32px; }
-.ask__evento { grid-column: 1 / -1; }
-.ask__evento[hidden] { display: none; }
 .field--full { grid-column: 1 / -1; }
 
 .field {
@@ -1036,19 +966,6 @@ textarea.campo {
     resize: none;
   }
 }
-/* la fecha: a la izquierda en el iPhone, apagada mientras está vacía */
-.campo--fecha::-webkit-date-and-time-value { text-align: left; }
-.campo--fecha.is-empty::-webkit-datetime-edit { color: var(--humo); }
-.campo--fecha::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.8; }
-
-.field__hint {
-  margin: 0;
-  color: var(--humo);
-  font-size: 14px;
-  line-height: 1.45;
-}
-.field__hint.is-dato { color: var(--hueso); }
-
 /* error: el campo con borde rojo y el led encendido al lado del aviso */
 .field.is-error .campo {
   border-color: var(--sangre);
@@ -1064,83 +981,18 @@ textarea.campo {
 }
 .field__error[hidden] { display: none; }
 
-/* tipo de evento: teclas con su led, apagado hasta que se elige */
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.chips span {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 44px;
-  padding: 0 16px;
-  border: 1px solid var(--campo-linea);
-  color: var(--humo);
-  font-size: 15px;
-  transition: border-color 0.2s ease, color 0.2s ease;
-}
-.chips span::before {
-  content: '';
-  width: 7px;
-  height: 7px;
-  border-radius: 1px;
-  background: var(--sangre);
-  opacity: 0.3;
-  transition: opacity 0.2s ease, box-shadow 0.2s ease;
-}
-.chips label:hover span {
-  color: var(--hueso);
-  border-color: rgba(241, 235, 230, 0.62);
-}
-.chips input:checked + span {
-  color: var(--hueso);
-  border-color: var(--hueso);
-}
-.chips input:checked + span::before {
-  opacity: 1;
-  box-shadow: 0 0 6px 1px rgba(200, 16, 26, 0.55);
-}
-
 .ask__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 36px;
 }
-.ask__alt {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0 20px;
-  margin: 10px 0 0;
-  color: var(--humo);
-  font-size: 14px;
-}
-.ask__link {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--hueso);
-  font-size: 14px;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 5px;
-  cursor: pointer;
-  transition: text-underline-offset 0.25s ease;
-}
-.ask__link:hover { text-underline-offset: 3px; }
-
 /* aviso de lo que pasó; si falta algo, con el led */
 .ask__status {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: 4px 0 0;
+  margin: 14px 0 0;
   font-size: 15px;
   line-height: 1.45;
 }
@@ -1423,15 +1275,11 @@ textarea.campo {
   .signed div,
   .spec div { grid-template-columns: minmax(110px, 38%) minmax(0, 1fr); }
 
-  .ask__grid,
-  .ask__evento {
+  .ask__grid {
     grid-template-columns: 1fr;
     gap: 24px;
   }
-  .ask__grid { margin-top: 28px; }
   .ask__actions .btn { flex: 1 1 100%; }
-  .ask__alt { padding-top: 6px; }
-  .ask__alt span { flex-basis: 100%; }
 
   .foot__row { grid-template-columns: 1fr; }
   .foot__credit { justify-self: start; }
