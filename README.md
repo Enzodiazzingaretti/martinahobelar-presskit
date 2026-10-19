@@ -58,7 +58,7 @@ sitemap.xml
 - **Bio:** las dos fotos son `img/bio-a.webp` (de pie) y `img/bio-b.webp` (recostada, recortada a 5:4). Abren el visor y se descargan completas (`fotos/13` y `fotos/14`).
 - **Booking:** el mail está en `index.html` (contacto directo y menú del celular) y en `script.js` (`MAIL`, al principio de la consulta); si cambia, va en los dos. El WhatsApp y el Instagram de bookings están solo en `index.html`. El saludo y el asunto que arma la consulta están en `compose`, en `script.js`.
 - **Rider:** la cabina es `img/rider-cabina.webp`, sacada del diagrama del presskit de Kexxy y adaptada a su setup: CDJ, mixer, CDJ y CDJ, sin texto en la imagen. Los modelos van escritos en la lista de al lado.
-- **Imágenes y caché:** el navegador guarda las imágenes un día. Si reemplazás una manteniendo el nombre, sumale `?v=` con un número nuevo donde se usa en `index.html` (como la 04 y la 07).
+- **Imágenes y caché:** el navegador guarda las imágenes un día. Si reemplazás una manteniendo el nombre, sumale `?v=` con un número nuevo donde se usa en `index.html` (como la 04).
 - **Inicio:** la foto es `img/hero-1.webp` (y `hero-1-2880.webp` para pantallas de alta densidad), con un recorte vertical para celular, `hero-1-m.webp`.
 - **Tipografía:** se sirve desde el sitio con caché de un año. Si se cambia el archivo de `fonts/`, cambiarle el nombre.
 - **Dominio:** la URL está escrita en `index.html` (canonical, `og:url`, `og:image`, JSON-LD), `robots.txt` y `sitemap.xml`. Si cambia, va en los tres.

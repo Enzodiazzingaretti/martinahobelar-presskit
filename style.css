@@ -847,8 +847,7 @@ button { font-family: inherit; }
 .g-12 { grid-column: 2 / 6; }
 .g-10 { grid-column: 7 / 13; align-self: center; }
 .g-04 { grid-column: 1 / 5; }
-.g-11 { grid-column: 5 / 9; margin-top: 12%; }
-.g-07 { grid-column: 9 / 13; }
+.g-11 { grid-column: 9 / 13; margin-top: 12%; }
 .g-09 { grid-column: 1 / 6; }
 .g-08 { grid-column: 8 / 12; align-self: center; }
 
@@ -1242,8 +1241,7 @@ textarea.campo {
   }
   /* de a una a todo el ancho, de a dos escalonadas */
   .grid > .g-01,
-  .grid > .g-10,
-  .grid > .g-07 { grid-column: 1 / -1; }
+  .grid > .g-10 { grid-column: 1 / -1; }
   .grid > .g-12,
   .grid > .g-11,
   .grid > .g-08 { margin-top: 32%; }
